@@ -1,0 +1,31 @@
+<section class="section">
+  <div class="container is-fluid has-text-centered">
+    <h1 class="title is-1">Quiz List</h1>
+    <div class="columns is-centered">
+      <div class="column is-4">
+        <table class="table is-striped">
+          <thead>
+            <tr>
+              <th>Quiz Name</th>
+              <th># Users In Quiz</th>
+              <th>In Action</th>
+              <th>Join</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="quiz in results">
+              <!-- shows the name of the quiz-->
+              <td>{{quiz.name}}</td>
+              <!-- show the number of players currently in a quiz -->
+              <td>{{quiz.users}}</td>
+              <!-- shows if the quiz is available to play or not -->
+              <td>{{quiz.isPlaying}}</td>
+
+              <td><button class="button" type="button" name="joinbtn" ng-model="joinbtn"><i class="fas fa-play"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

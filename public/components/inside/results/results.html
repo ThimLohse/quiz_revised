@@ -1,0 +1,29 @@
+<section class="section">
+  <div class="container is-fluid has-text-centered">
+    <h1 class="title is-1">All Top Scores</h1>
+
+    <div class="columns is-centered">
+      <div class="column is-4">
+        <table class="table is-striped">
+          <thead>
+            <tr>
+              <th>Quiz Name</th>
+              <th>Score</th>
+              <th>User</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="score in results">
+              <!-- shows the name of the quiz-->
+              <td>{{quiz.name}}</td>
+              <!-- show the score for the quiz -->
+              <td>{{quiz.score}}</td>
+              <!-- shows the user -->
+              <td>{{quiz.user}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

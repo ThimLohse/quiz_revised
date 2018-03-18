@@ -1,0 +1,43 @@
+<div class="container has-text-centered">
+  <h1 class="title is-1">Login</h1>
+  <div class="columns">
+    <div class="column is-8 is-offset-2">
+      <div class="card">
+        <div class="card-content">
+          <form>
+            <div class="field">
+              <label class="label">Username</label>
+              <div class="control has-icons-left">
+                <input class="input" type="text" placeholder="Enter username..." required>
+                <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+              </span>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Password</label>
+              <div class="control has-icons-left">
+                <input class="input" type="password" placeholder="Enter password..." required>
+                <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+              </div>
+            </div>
+            <div class="field is-grouped">
+              <div class="control">
+                <button class="button is-success">Submit</button>
+              </div>
+              <div class="control">
+                <button class="button is-text">Cancel</button>
+              </div>
+            </div>
+            <div class="container has-text-left">
+                Not a member? <span><a ui-sref="app.outside.navbar.register">Register here</a></span>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

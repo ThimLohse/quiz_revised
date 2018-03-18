@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html ng-app="quiz">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <!-- Angular specific packages -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-animate.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.3/angular-ui-router.min.js"></script>
+
+  <!-- jQuery package -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- Bulma IO for UI styling -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css" />
+
+  <!-- Custom styling -->
+  <link rel="stylesheet/less" type="text/css" href="main.less">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script>
+
+  <!-- Icon packages -->
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css">
+
+
+  <title>Quizzer</title>
+</head>
+<body>
+
+  <!--Intro music
+  <audio id="intro" autoplay>
+    <source src="./shared/intro.ogg" type="audio/ogg">
+      <source src="./shared/intro.mp3" type="audio/mp3">
+  </audio>
+-->
+  <!-- MAIN CONTENT -->
+  <section class="hero is-fullheight">
+     <!-- Content will be injected here -->
+     <ui-view/>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p>
+          <strong>Made with duct tape and glue </strong> <i>by</i> Thim Lohse and Gustav Pettersson.
+        </p>
+      </div>
+    </div>
+  </footer>
+  <!-- Global app logic -->
+  <script src="app.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+  <script src="./components/inside/controllers/insideControllers.js" charset="utf-8"></script>
+  <script src="./components/outside/controllers/outsideControllers.js" charset="utf-8"></script>
+</body>
+
+</html>
