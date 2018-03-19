@@ -85,6 +85,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 }]);
 
 
+//Controll user state transitions
 app.run(['$rootScope','$state', '$log', function($rootScope, $state, $log){
 
   //default value is user is NOT logged in
