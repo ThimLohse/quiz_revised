@@ -2,8 +2,8 @@
   <div class="container is-fluid has-text-centered">
     <h1 class="title is-1">Quiz List</h1>
     <div class="columns is-centered">
-      <div class="column is-4">
-        <table class="table is-striped">
+      <div class="column is-8">
+        <table class="table is-striped is-fullwidth is-hoverable">
           <thead>
             <tr>
               <th>Quiz Name</th>
@@ -19,9 +19,9 @@
               <!-- show the number of players currently in a quiz -->
               <td>{{quiz.users}}</td>
               <!-- shows if the quiz is available to play or not -->
-              <td>{{quiz.isPlaying}}</td>
+              <td>{{quiz.playing}}</td>
 
-              <td><button class="button" type="button" name="joinbtn" ng-model="joinbtn"><i class="fas fa-play"></i></button></td>
+              <td><button class="button" type="button" ng-disabled={{quiz.playing}} name="joinbtn" ng-click="joinGame()"><i class="fas fa-play"></i></button></td>
             </tr>
           </tbody>
         </table>

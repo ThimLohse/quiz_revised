@@ -5,10 +5,10 @@
         <!-- show which users have already answered -->
         <div class="card">
           <div class="card-content">
-            <table class="table is-striped">
+            <table class="table is-striped is-hoverable is-fullwidth">
               <thead>
                 <tr>
-                  <th>Player</th>
+                  <th>Players already answered</th>
                 </tr>
               </thead>
               <tbody>
@@ -26,18 +26,33 @@
       <div class="column is-10">
         <!-- show the current question and possible answers -->
         <div class="card">
+          <div class="card-header">
+            <div class="card-header-title is-centered">
+              <h1 class="title is-1">Question</h1>
+            </div>
+          </div>
           <div class="card-content">
-            <div class="container">
-              Question
+              <div class="card clickable">
+                <div class="card-content">
+                  <div class="container">
+                    <h1 class="subtitle is-5">Answer 1</h1>
+                  </div>
+                </div>
             </div>
-            <div class="container">
-              <ol>
-                <li>Answer 1</li>
-                <li>Answer 2</li>
-                <li>Answer 3</li>
-                <li>Answer 4</li>
-              </ol>
+            <br>
+            <div class="card clickable">
+              <div class="card-content">
+                  <h1 class="subtitle is-5">Answer 2</h1>
+              </div>
+          </div>
+          <br>
+          <div class="card clickable">
+            <div class="card-content">
+              <div class="container">
+              <h1 class="subtitle is-5">Answer 3</h1>
+              </div>
             </div>
+        </div>
           </div>
         </div>
       </div>

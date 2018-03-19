@@ -2,43 +2,40 @@
   <div class="container is-fluid has-text-centered">
     <h1 class="title is-1">Dashboard</h1>
     <div class="columns is-centered">
-      <div class="column is-12">
-        <section class="section">
-        <div class="container has-text-centered">
-        <div class="field">
-          <label class="label">Quiz List</label>
-          <div class="control">
-              <div class="container has-text-centered">
-               <button class="button is-large" ui-sref="app.inside.navbar.quizList"><i class="fas fa-question"></i></button>
-               </div>
+      <div class="column is-8">
+
+          <div class="card clickable" ui-sref="app.inside.navbar.quizList">
+            <header class="card-header">
+              <p class="card-header-title is-centered">
+                Quiz List
+              </p>
+            </header>
+            <div class="card-content">
+              Here you will find all the available quizzes.
             </div>
           </div>
-        </div>
-      </section>
-      <section class="section">
-        <div class="container has-text-centered">
-        <div class="field">
-          <label class="label">Your Top Scores</label>
-          <div class="control">
-              <div class="container has-text-centered">
-               <button class="button is-large" ui-sref="app.inside.navbar.userResults"><i class="far fa-star"></i></button>
-               </div>
+          <br>
+          <div class="card clickable" ui-sref="app.inside.navbar.userResults">
+            <header class="card-header">
+              <p class="card-header-title is-centered">
+                Your Top Scores
+              </p>
+            </header>
+            <div class="card-content">
+              Do you want to bask in the ambiance of your own greatness, then this is where to click.
             </div>
           </div>
-        </div>
-      </section>
-      <section class="section">
-        <div class="container has-text-centered">
-        <div class="field">
-          <label class="label">All Top Scores</label>
-          <div class="control">
-              <div class="container has-text-centered">
-               <button class="button is-large" ui-sref="app.inside.navbar.results"><i class="fas fa-star"></i></button>
-               </div>
+          <br>
+          <div class="card clickable" ui-sref="app.inside.navbar.userResults">
+            <header class="card-header">
+              <p class="card-header-title is-centered">
+              All Top Scores
+            </p>
+            </header>
+            <div class="card-content">
+              Even if it's not very likely, there might be someone better than you out there. Click here to see who to beat.
             </div>
           </div>
-        </div>
-      </section>
       </div>
     </div>
   </div>
