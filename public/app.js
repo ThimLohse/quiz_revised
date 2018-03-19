@@ -87,16 +87,18 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
 app.run(['$rootScope','$state', '$log', function($rootScope, $state, $log){
 
+  $rootScope.isLoggedin = false;
   // Thie is fired when a transition begins,
   // i.e. the user changes the url manually or it is a transition initiated by the application
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
       // Check if it is a valid state to transition to and if the state is in the inside of the app (using regex)
     if(toState.name && toState.name.match(/^app\.inside\./)){
-      $rootScope.isLoggedin = false;
 
+
+      $log.debug("rootscope: " + $rootScope.isLoggedin);
       // user MUST be authorized to gain access to the inside of the app
-      if($rootScope.isLoggedin){
+      if(!$rootScope.isLoggedin){
 
         $log.debug('Session has expired, redirect to signin page');
 
@@ -104,7 +106,7 @@ app.run(['$rootScope','$state', '$log', function($rootScope, $state, $log){
         event.preventDefault();
 
         // Redirect to login page
-        return $state.go('app.outside.login');
+        return $state.go('app.outside.navbar.login');
       }
     }
 

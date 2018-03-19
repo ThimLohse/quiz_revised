@@ -4,11 +4,11 @@
     <div class="column is-8 is-offset-2">
       <div class="card">
         <div class="card-content">
-          <form>
+          <form name="login" ng-model="login" novalidate>
             <div class="field">
               <label class="label">Username</label>
               <div class="control has-icons-left">
-                <input class="input" type="text" placeholder="Enter username..." required>
+                <input class="input" type="text" placeholder="Enter username..." required ng-model="username">
                 <span class="icon is-small is-left">
                 <i class="fas fa-user"></i>
               </span>
@@ -17,7 +17,7 @@
             <div class="field">
               <label class="label">Password</label>
               <div class="control has-icons-left">
-                <input class="input" type="password" placeholder="Enter password..." required>
+                <input class="input" type="password" placeholder="Enter password..." required ng-model="password">
                 <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
               </span>
@@ -25,10 +25,7 @@
             </div>
             <div class="field is-grouped">
               <div class="control">
-                <button class="button is-success">Submit</button>
-              </div>
-              <div class="control">
-                <button class="button is-text">Cancel</button>
+                <button type="submit" ng-disabled="login.$invalid" class="button is-success" ng-click="submit()">Submit</button>
               </div>
             </div>
             <div class="container has-text-left">
@@ -37,7 +34,15 @@
           </form>
         </div>
       </div>
-
+      <br>
+      <article ng-show="message" ng-model="message" class="message {{status}}">
+  <div class="message-header">
+    <p>{{messageHeader}}</p>
+    <button class="delete" aria-label="delete" ng-click="hideMessage()"></button>
+  </div>
+  <div ng-model="message_body" class="message-body">
+    {{messageBody}}
+</article>
     </div>
   </div>
 </div>

@@ -4,7 +4,7 @@
     <div class="column is-8 is-offset-2">
       <div class="card">
         <div class="card-content">
-          <form name="register">
+          <form name="register" ng-model="form" novalidate>
             <div class="field">
               <label class="label">Username</label>
               <div class="control has-icons-left has-icons-right">
@@ -27,22 +27,31 @@
               <label class="label">Verify Password</label>
               <div class="control has-icons-left has-icons-right">
                 <input class="input" type="password" placeholder="Verify password..." required ng-model="vpassword">
+                </span>
                 <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
               </span>
               </div>
+              <p class="help is-danger" ng-show="password != vpassword">Passwords must match!</p>
             </div>
             <div class="field is-grouped">
               <div class="control">
-                <button class="button is-success" ng-click="submit()">Submit</button>
-              </div>
-              <div class="control">
-                <button class="button is-text" ng-click="cancel()">Cancel</button>
+                <button type="submit" ng-disabled="register.$invalid || password != vpassword" class="button is-success" ng-click="submit()">Submit</button>
               </div>
             </div>
-        </form>
+          </form>
         </div>
       </div>
+      <br>
+      <article ng-show="message" ng-model="message" class="message {{status}}">
+  <div class="message-header">
+    <p>{{messageHeader}}</p>
+    <button class="delete" aria-label="delete" ng-click="hideMessage()"></button>
+  </div>
+  <div ng-model="message_body" class="message-body">
+    {{messageBody}}
+</article>
+
     </div>
   </div>
 </div>
