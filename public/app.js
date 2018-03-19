@@ -76,7 +76,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     templateUrl: './components/inside/quizList/quizList.html',
     controller: 'quizListCtrl'
   })
-  .state('app.inside.navbar.quiz', {
+  .state('app.inside.quiz', {
     url: '/quiz',
     templateUrl: './components/inside/quiz/quiz.html',
     controller: 'quizCtrl'
