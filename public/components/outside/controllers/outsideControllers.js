@@ -25,7 +25,7 @@ angular.module('quiz').controller('registerCtrl', function($scope, $log, $http) 
         $log.debug(response);
       }, function(response){
 
-        $log.debug(response);
+        $log.debug('not succesfull');
       });
     }
     else{
