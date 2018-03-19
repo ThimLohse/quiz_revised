@@ -12,13 +12,13 @@ angular.module('quiz').controller('loginCtrl', function($rootScope, $scope, $log
     var username = $scope.username;
     var password = $scope.password;
 
-    $http.post('130.229.135.60:5000/api/signin', {
-      'username': username,
+    $http.post('/api/signin', {
+      'user': username,
       'pwd': password
     }).then(function(response){
       //If succesfull answer from server
       //if correct credentials, Login user, set authservice to correct (not secure, but rootscope.isAuth = true) redirect to inside (dashboard)
-      if(response.success){
+      if(response.data.success){
         $log.debug("Successfully logged in!");
         $state.go('app.inside.dashboard')
 
@@ -55,14 +55,16 @@ angular.module('quiz').controller('registerCtrl', function($scope, $log, $http) 
       $scope.password = '';
       $scope.vpassword = '';
 
-      $http.post('130.229.135.60:5000/api/signup', {
-        'username': username,
+      $http.post('/api/signup', {
+        'user': username,
         'pwd': password
       }).then(function(response) {
 
         $log.debug(response);
+        $log.debug(response.data.success);
 
-        if(response.success){
+
+        if(response.data.success){
           //if successfully created user
           $scope.status = "is-success"
           $scope.messageHeader = "Congratulations. A new user has been created with username: " + $scope.username;
