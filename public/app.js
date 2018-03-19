@@ -111,7 +111,7 @@ app.run(['$rootScope','$state', '$log', function($rootScope, $state, $log){
         return $state.go('app.outside.navbar.login');
       }
     }
-    if(toState.name.match(/^app\.inside\./) && toState.name.match(/^app\.outside\./)){
+    if(fromState.name.match(/^app\.inside\./) && toState.name.match(/^app\.outside\./)){
 
       $rootScope.isLoggedin = false;
       $log.debug("rootscope: " + $rootScope.isLoggedin);

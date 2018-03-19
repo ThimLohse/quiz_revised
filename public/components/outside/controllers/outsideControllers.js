@@ -39,6 +39,12 @@ $http.post('/api/signin', req
       $log.debug(response);
     });
 
+    //TODO REMOVE THE BACKDOOR AFTER TESTING
+    if(username === 'admin' && password === 'admin'){
+      $rootScope.isLoggedin = true;
+      $state.go('app.inside.navbar.dashboard')
+    }
+
   }
 });
 
@@ -49,15 +55,13 @@ angular.module('quiz').controller('registerCtrl', function($scope, $log, $http) 
     var username = $scope.username;
     var password = $scope.password;
     var vpassword = $scope.vpassword;
+    var req = {'user': username, 'pwd': password};
       //send post request with username and password to the server
       $scope.username = '';
       $scope.password = '';
       $scope.vpassword = '';
 
-      $http.post('/api/signup', {
-        'user': username,
-        'pwd': password
-      }).then(function(response) {
+      $http.post('/api/signup', req).then(function(response) {
 
         $log.debug(response);
 
