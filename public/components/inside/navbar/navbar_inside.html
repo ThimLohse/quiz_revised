@@ -12,17 +12,20 @@
     </div>
     <div id="navbarMenuHeroB" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item {{dashboard}}" ng-click="activate('dashboard')" ui-sref="app.inside.navbar.dashboard">
+        <a class="navbar-item" ui-sref="app.inside.navbar.dashboard">
           Dashboard
         </a>
-        <a class="navbar-item {{quizlist}}" ng-click="activate('quizlist')" ui-sref="app.inside.navbar.quizList">
+        <a class="navbar-item"ui-sref="app.inside.navbar.quizList">
           Quiz List
         </a>
-        <a class="navbar-item {{userresults}}" ng-click="activate('userresults')" ui-sref="app.inside.navbar.userResults">
+        <a class="navbar-item" ui-sref="app.inside.navbar.userResults">
           Your Top Scores
         </a>
-        <a class="navbar-item {{results}}" ng-click="activate('results')" ui-sref="app.inside.navbar.results">
+        <a class="navbar-item"ui-sref="app.inside.navbar.results">
           All Top Scores
+        </a>
+        <a class="navbar-item" ng-click="logout()">
+          Log out
         </a>
       </div>
     </div>
