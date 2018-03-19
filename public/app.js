@@ -115,8 +115,6 @@ app.run(['$rootScope','$state', '$log', function($rootScope, $state, $log){
 
       $rootScope.isLoggedin = false;
       $log.debug("rootscope: " + $rootScope.isLoggedin);
-      // user MUST be authorized to gain access to the inside of the app
-        return $state.go('app.outside.navbar.home');
 
     }
 
