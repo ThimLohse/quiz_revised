@@ -19,7 +19,7 @@ $http.post('/api/signin', req
       if(response.data.success){
         $rootScope.isLoggedin = true;
         $log.debug("Successfully logged in!");
-        $state.go('app.inside.dashboard')
+        $state.go('app.inside.navbar.dashboard')
 
       }else{
         //if incorrect credentials, send message user
