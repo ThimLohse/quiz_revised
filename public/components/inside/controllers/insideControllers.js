@@ -2,7 +2,11 @@
 //Open up socket connection. This is used for socket communication with the server
 var socket = io();
 
-angular.module('quiz').controller('insideNavCtrl', function($scope, $log) {
+angular.module('quiz').controller('insideNavCtrl', function($scope, $log, $state) {
+
+  $scope.logout = function(){
+    $state.go('app.outside.navbar.home');
+  };
 
 });
 angular.module('quiz').controller('dashboardCtrl', function($scope, $log) {});

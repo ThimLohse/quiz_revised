@@ -87,6 +87,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
 app.run(['$rootScope','$state', '$log', function($rootScope, $state, $log){
 
+  //default value is user is NOT logged in
   $rootScope.isLoggedin = false;
   // Thie is fired when a transition begins,
   // i.e. the user changes the url manually or it is a transition initiated by the application
@@ -108,6 +109,14 @@ app.run(['$rootScope','$state', '$log', function($rootScope, $state, $log){
         // Redirect to login page
         return $state.go('app.outside.navbar.login');
       }
+    }
+    if(toState.name.match(/^app\.inside\./) && toState.name.match(/^app\.outside\./)){
+
+      $rootScope.isLoggedin = false;
+      $log.debug("rootscope: " + $rootScope.isLoggedin);
+      // user MUST be authorized to gain access to the inside of the app
+        return $state.go('app.outside.navbar.home');
+
     }
 
   });
