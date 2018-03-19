@@ -1,0 +1,37 @@
+<nav id="nav" class="navbar is-light is-fixed-top">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item">
+        <img src="../../../shared/logo_embedded.svg" width="48" height="48" alt="QQ">
+      </a>
+      <span class="navbar-burger burger" data-target="navbarMenuHeroB">
+        <span></span>
+      <span></span>
+      <span></span>
+      </span>
+    </div>
+    <div id="navbarMenuHeroB" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item {{dashboard}}" ng-click="activate('dashboard')" ui-sref="app.inside.navbar.dashboard">
+          Dashboard
+        </a>
+        <a class="navbar-item {{quizlist}}" ng-click="activate('quizlist')" ui-sref="app.inside.navbar.quizList">
+          Quiz List
+        </a>
+        <a class="navbar-item {{userresults}}" ng-click="activate('userresults')" ui-sref="app.inside.navbar.userResults">
+          Your Top Scores
+        </a>
+        <a class="navbar-item {{results}}" ng-click="activate('results')" ui-sref="app.inside.navbar.results">
+          All Top Scores
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+<section id="insideHero" class="hero is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <ui-view/>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,48 @@
+<div class="container has-text-centered">
+  <h1 class="title is-1">Register</h1>
+  <div class="columns">
+    <div class="column is-8 is-offset-2">
+      <div class="card">
+        <div class="card-content">
+          <form name="register">
+            <div class="field">
+              <label class="label">Username</label>
+              <div class="control has-icons-left has-icons-right">
+                <input class="input" type="text" placeholder="Choose a username..." required ng-model="username">
+                <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+              </span>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Password</label>
+              <div class="control has-icons-left has-icons-right">
+                <input class="input" type="password" placeholder="Choose a password..." required ng-model="password">
+                <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Verify Password</label>
+              <div class="control has-icons-left has-icons-right">
+                <input class="input" type="password" placeholder="Verify password..." required ng-model="vpassword">
+                <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+              </div>
+            </div>
+            <div class="field is-grouped">
+              <div class="control">
+                <button class="button is-success" ng-click="submit()">Submit</button>
+              </div>
+              <div class="control">
+                <button class="button is-text" ng-click="cancel()">Cancel</button>
+              </div>
+            </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
