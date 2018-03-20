@@ -1,60 +1,23 @@
-<section class="section">
-  <div class="container">
-    <div class="columns">
-      <div class="column is-2">
-        <!-- show which users have already answered -->
-        <div class="card">
-          <div class="card-content">
-            <table class="table is-striped is-hoverable is-fullwidth">
-              <thead>
-                <tr>
-                  <th>Players already answered</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Gustav</td>
-                </tr>
-                <tr>
-                  <td>Thim</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+<section class="hero is-fullheight">
+  <div class="hero-body">
+    <div class="tile is-ancestor">
+      <div class="tile is-vertical is-2" ng-hide="infoWindow" ng-model="infoWindow" >
+        <div class="tile is-parent">
+          <article class="tile is-child notification is-primary">
+            <p class="title">{{playerInfo}}</p>
+            <div class="content">
+              <table class="table is-striped">
+                <tbody>
+                  <tr ng-repeat="res in results">
+                    <td>{{res.user}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
         </div>
       </div>
-      <div class="column is-10">
-        <!-- show the current question and possible answers -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-header-title is-centered">
-              <h1 class="title is-1">Question</h1>
-            </div>
-          </div>
-          <div class="card-content">
-              <div class="card clickable">
-                <div class="card-content">
-                  <div class="container">
-                    <h1 class="subtitle is-5">Answer 1</h1>
-                  </div>
-                </div>
-            </div>
-            <br>
-            <div class="card clickable">
-              <div class="card-content">
-                  <h1 class="subtitle is-5">Answer 2</h1>
-              </div>
-          </div>
-          <br>
-          <div class="card clickable">
-            <div class="card-content">
-              <div class="container">
-              <h1 class="subtitle is-5">Answer 3</h1>
-              </div>
-            </div>
-        </div>
-          </div>
-        </div>
+      <div class="tile is-parent ui-view">
       </div>
     </div>
   </div>

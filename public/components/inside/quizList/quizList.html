@@ -21,7 +21,7 @@
               <!-- shows if the quiz is available to play or not -->
               <td>{{quiz.playing}}</td>
 
-              <td><button class="button" type="button" ng-disabled={{quiz.playing}} name="joinbtn" ng-click="joinGame()"><i class="fas fa-play"></i></button></td>
+              <td><button class="button" type="button" ng-disabled={{quiz.playing}} name="joinbtn" ng-click="joinGame({{quiz.quizId}})"><i class="fas fa-play"></i></button></td>
             </tr>
           </tbody>
         </table>

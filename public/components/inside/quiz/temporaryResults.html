@@ -1,0 +1,18 @@
+<article class="tile is-child notification is-primary">
+  <section class="section box">
+    <table class="table is-striped is-hoverable is-fullwidth">
+      <thead>
+        <th>User</th>
+        <th>Score</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="res in results">
+          <td>{{res.user}}</td>
+          <td>{{res.score}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <br>
+   <button class="button is-dark is-large" ng-click="done()">Done</button>
+</article>

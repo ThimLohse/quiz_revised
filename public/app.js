@@ -80,6 +80,23 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     url: '/quiz',
     templateUrl: './components/inside/quiz/quiz.html',
     controller: 'quizCtrl'
+  })
+  //possible inside states for a quiz
+  .state('app.inside.quiz.waiting',{
+    url: '/waiting',
+    templateUrl: './components/inside/quiz/waiting.html',
+    controller: 'waitingCtrl'
+
+  })
+  .state('app.inside.quiz.playing',{
+    url: '/playing',
+    templateUrl: './components/inside/quiz/playing.html',
+    controller: 'playingCtrl'
+  })
+  .state('app.inside.quiz.tempres',{
+    url: '/results',
+    templateUrl: './components/inside/quiz/temporaryResults.html',
+    controller: 'tempResCtrl'
   });
 
 }]);
@@ -114,6 +131,7 @@ app.run(['$rootScope','$state', '$log', function($rootScope, $state, $log){
     if(fromState.name.match(/^app\.inside\./) && toState.name.match(/^app\.outside\./)){
 
       $rootScope.isLoggedin = false;
+      $rootScope.user = null;
       $log.debug("rootscope: " + $rootScope.isLoggedin);
 
     }
