@@ -1,0 +1,31 @@
+<!-- show the current question and possible answers -->
+<article class="tile is-child notification is-primary">
+  <section class="section box">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-header-title is-centered">
+          <h1 class="title is-1">{{question}}</h1>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="card clickable" ng-disabled="{{waiting}}" ng-click="answer('alt1')">
+          <div class="card-content">
+            <h1 class="subtitle is-5">{{alt1}}</h1>
+          </div>
+        </div>
+        <br>
+        <div class="card clickable" ng-disabled="{{waiting}}" ng-click="answer('alt2')">
+          <div class="card-content">
+            <h1 class="subtitle is-5">{{alt2}}</h1>
+          </div>
+        </div>
+        <br>
+        <div class="card clickable" ng-disabled="{{waiting}}" ng-click="answer('alt3')">
+          <div class="card-content">
+            <h1 class="subtitle is-5">{{alt3}}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>

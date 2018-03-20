@@ -17,7 +17,10 @@ $http.post('/api/signin', req
       //If succesfull answer from server
       //if correct credentials, Login user, set authservice to correct (not secure, but rootscope.isAuth = true) redirect to inside (dashboard)
       if(response.data.success){
+
         $rootScope.isLoggedin = true;
+        $rootScope.user = response.data.userId;
+
         $log.debug("Successfully logged in!");
         $state.go('app.inside.navbar.dashboard')
 
