@@ -61,7 +61,7 @@ module.exports = function(app, db) {
 	app.post('/api/signin', function(req, res) {
 		db.user.findAll({where: {username: req.body.user, password: req.body.pwd}}).then(function(result){
 			if(result.length > 0){
-				res.json({success: true});
+				res.json({success: true, userId: req.body.user});
 			}else{
 				res.json({success: false});
 			}
@@ -69,7 +69,7 @@ module.exports = function(app, db) {
 	});
 
 	// Get all the quizes for the quiz room
-	app.get('/api/quizRoom', function(req, res) {
+	app.get('/api/quizList', function(req, res) {
 		var quizzes = quizRoom.getQuizRoom();
 		res.json(quizzes);
 	});

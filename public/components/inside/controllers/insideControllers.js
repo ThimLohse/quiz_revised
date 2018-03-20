@@ -10,7 +10,7 @@ angular.module('quiz').controller('insideNavCtrl', function($scope, $log, $state
 
 });
 angular.module('quiz').controller('dashboardCtrl', function($scope, $log) {});
-angular.module('quiz').controller('quizListCtrl', function($state, $scope, $log) {
+angular.module('quiz').controller('quizListCtrl', function($state, $scope, $log, $http) {
 
   //Join quiz
   $scope.joinGame = function(){
@@ -23,20 +23,21 @@ angular.module('quiz').controller('quizListCtrl', function($state, $scope, $log)
 
   $http.get('/api/quizRoom').then(function(response){
     $scope.results = response.data;
+    $log.debug(response.data);
 
   }).then(function(response){
 
   });
 });
-angular.module('quiz').controller('resultsCtrl', function($scope, $log) {
+angular.module('quiz').controller('resultsCtrl', function($scope, $log, $http) {
 
   //Fetch results here and populate view
 });
-angular.module('quiz').controller('userResultsCtrl', function($scope, $log) {
+angular.module('quiz').controller('userResultsCtrl', function($scope, $log, $http) {
 
   //fetch user specific results and populate view
 });
-angular.module('quiz').controller('quizCtrl', function($scope, $log) {
+angular.module('quiz').controller('quizCtrl', function($scope, $log, $http) {
 
   //Here we will do all "in game" communication with sockets,
   //Hand only post the final result with a post request at the end of the game.

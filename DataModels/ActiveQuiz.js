@@ -31,41 +31,49 @@ function ActiveQuiz (quizId, name, users, questions, alt1, alt2, alt3, correct, 
 function User (userId) {
 	this.userId = userId;
 	this.score = 0;
+	this.ready = false;
 }
 
 // quiz is the Quiz object coming from the QuizRoom list
 // the instance is used to create an actual quiz, with
 // questions and answers.
-exports.startQuiz = function(quiz){
-	db.question.findAll({where: {quizId: quz.quizId}}).then(function(result){
-		// Create new Quiz from the result and add it to activeQuizzes
-		var length = result.length;
-		var nrQuestions = length;
-		var questions = [];
-		var alt1 = [];
-		var alt2 = [];
-		var alt3 = [];
-		var correct = [];
-		// Add all questions with corresponding answers and alternatives
-		for (var i = 0; i < length; i++){
-			questions.push(result[i].question);
-			alt1.push(result[i].alt1);
-			alt2.push(result[i].alt2);
-			alt3.push(result[i].alt3);
-			correct.push(result[i].correct);
-		}
-		// Add all the users to the quiz in form of user objects
-		length = quiz.users.length;
-		var users = []
-		for (var i = 0; i < length; i++) {
-			var user = new User(quiz.users[i]);
-			users.push(user);
-		}
+exports.startQuiz = function(quiz, userId){
+	var quizId = quiz.quizId;
+	var activeQuiz = getActiveQuiz(quiz);
+	if(activeQuiz){
+		db.question.findAll({where: {quizId: quz.quizId}}).then(function(result){
+			// Create new Quiz from the result and add it to activeQuizzes
+			var length = result.length;
+			var nrQuestions = length;
+			var questions = [];
+			var alt1 = [];
+			var alt2 = [];
+			var alt3 = [];
+			var correct = [];
+			// Add all questions with corresponding answers and alternatives
+			for (var i = 0; i < length; i++){
+				questions.push(result[i].question);
+				alt1.push(result[i].alt1);
+				alt2.push(result[i].alt2);
+				alt3.push(result[i].alt3);
+				correct.push(result[i].correct);
+			}
+			// Add all the users to the quiz in form of user objects
+			length = quiz.users.length;
+			var users = [];
+			for (var i = 0; i < length; i++) {
+				var user = new User(quiz.users[i]);
+				users.push(user);
+			}
 
-		var activeQuiz = new ActiveQuiz(quiz.quizId, quiz.name, users, questions, alt1, alt2, alt3, correct, nrQuestions);
-		activeQuizzes.push(activeQuiz);
+			var activeQuiz = new ActiveQuiz(quiz.quizId, quiz.name, users, questions, alt1, alt2, alt3, correct, nrQuestions);
+			activeQuizzes.push(activeQuiz);
 
-	})
+		});
+	}
+	var user = getUserInQuiz(quizId, userId);
+	user.ready = true;
+
 }
 
 // Returns the next question for the active game, should be called once from the socket module and broadcasted to 
@@ -75,8 +83,13 @@ exports.nextQuestion = function(quizId){
 	var currentQuestion = activeQuiz.currentQuestion;
 	activeQuiz.currentQuestion ++;
 	var nextQuestion = activeQuiz.questions[currentQuestion];
+	var nextAlt1 = activeQuiz.alt1[currentQuestion];
+	var nextAlt2 = activeQuiz.alt2[currentQuestion];
+	var nextAlt3 = activeQuiz.alt3[currentQuestion];
 
-	return nextQuestion;
+	var data  = {question: nextQuestion, alt1: nextAlt1, alt2: nextAlt2, alt3: nextAlt3};
+
+	return data;
 }
 
 // The function will add points to a user if it did answer the current question correctly, for now 1 or 0 is returned
@@ -94,7 +107,7 @@ exports.userAnswer = function(quizId, user, answer){
 }
 
 // The socket module will check with this function to see when it is time to broadcast the next question
-exports.timeForNextQuestion = function(){
+exports.timeForNextQuestion = function(quizId){
 	var quiz = getActiveQuiz(quizId);
 	if (quiz.answers == quiz.users.length){
 		quiz.answers = 0;
@@ -123,6 +136,17 @@ exports.registerResults = function(quizId){
 			} 
 		});
 	}
+}
+
+exports.readyToStartQuiz = function(quizId){
+	var quiz = getActiveQuiz(quizId);
+	var length = quiz.users.length;
+	for(var i = 0; i < length; i++){
+		if (!quiz.users[i].ready){
+			return false;
+		}
+	}
+	return true;
 }
 
 /*
@@ -174,6 +198,8 @@ function getActiveQuiz(quizId){
 			return activeQuizzes[i];
 		}
 	}
+	// Returns true is the quiz can not be found 
+	return true;
 }
 
 function getUserInQuiz(quiz, user){

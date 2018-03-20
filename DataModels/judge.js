@@ -1,3 +1,6 @@
+// Data module is not used, the file should be removed before production
+
+
 // The data model representing each quiz
 "usestrict";
 

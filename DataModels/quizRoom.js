@@ -30,17 +30,22 @@ function Quiz (name, quizId, level, genre){
 	this.name = name;
 	this.level = level;
 	this.genre = genre;
-	this.users = [];
+	this.users = []; // Will be a list of Users 
 	this.playing = false;
 
 
+}
+
+function User (userId){
+	this.userId = userId;
+	this.ready = false;
 }
 
 exports.getQuizRoom = function(){
 	return QuizRoom;
 } 
 
-exports.quizPlaying = function(id){
+exports.startQuiz = function(id){
 	var length = QuizRoom.length;
 	for (var i = 0; i < length; i++){
 		if (QuizRoom[i].quizId == id){
@@ -58,10 +63,20 @@ exports.quizEnded = function(id){
 	}
 }
 
-exports.joinQuiz = function(id, user){
+exports.getQuiz = function(quizId){
+	var length = QuizRoom.lenght;
+	for(var i = 0; i < lenght; i++){
+		if (QuizRoom[i].quizId == quizId){
+			return QuizRoom[i];
+		}
+	}
+}
+
+exports.joinQuiz = function(id, userId){
 	var length = QuizRoom.length;
 	for (var i = 0; i < length; i++){
 		if (QuizRoom[i].quizId == id){
+			var user = User(userId);
 			QuizRoom[i].users.push(user);
 		}
 	}

@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataType) {
 			allowNull: false
 		},
 		corect: {
-			type: DataType.INTEGER,
+			type: DataType.STRING,
 			allowNull: false
 		}
 	});
