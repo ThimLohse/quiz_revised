@@ -32,7 +32,7 @@ module.exports = function(socket, io) {
     io.to('quizList').emit('updateQuizList', updatedQuizList);
   });
 
-  socket.on('startQuiz'), function(req){
+  socket.on('startQuiz', function(req){
 
     var quiz = quizList.getQuiz(req.quizId);
 
@@ -42,7 +42,7 @@ module.exports = function(socket, io) {
       io.to(req.quizId).emit('question', activeQuiz.nextQuestion(req.quizId));
     }
 
-  }
+  });
 
   socket.on('answer', function(req){
     activeQuiz.userAnswer(req.quizId, req.userId, req.answer);
