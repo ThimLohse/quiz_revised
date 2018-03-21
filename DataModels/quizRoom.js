@@ -45,10 +45,10 @@ exports.getQuizRoom = function(){
 	return QuizRoom;
 } 
 
-exports.startQuiz = function(id){
+exports.startQuiz = function(quizId){
 	var length = QuizRoom.length;
 	for (var i = 0; i < length; i++){
-		if (QuizRoom[i].quizId == id){
+		if (QuizRoom[i].quizId == quizId){
 			QuizRoom[i].playing = true;
 		}
 	}
@@ -59,13 +59,16 @@ exports.quizEnded = function(id){
 	for (var i = 0; i < length; i++){
 		if (QuizRoom[i].quizId == id){
 			QuizRoom[i].playing = false;
+			QuizRoom[i].users = [];
 		}
 	}
 }
 
 exports.getQuiz = function(quizId){
-	var length = QuizRoom.lenght;
-	for(var i = 0; i < lenght; i++){
+	console.log(QuizRoom)
+	var length = QuizRoom.length;
+	for(var i = 0; i < length; i++){
+		console.log(QuizRoom[i].quizId)
 		if (QuizRoom[i].quizId == quizId){
 			return QuizRoom[i];
 		}
@@ -76,7 +79,7 @@ exports.joinQuiz = function(id, userId){
 	var length = QuizRoom.length;
 	for (var i = 0; i < length; i++){
 		if (QuizRoom[i].quizId == id){
-			var user = User(userId);
+			var user = new User(userId);
 			QuizRoom[i].users.push(user);
 		}
 	}
