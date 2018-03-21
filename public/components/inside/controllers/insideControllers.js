@@ -12,11 +12,15 @@ angular.module('quiz').controller('insideNavCtrl', function($scope, $log, $state
 angular.module('quiz').controller('dashboardCtrl', function($scope, $log) {});
 angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $scope, $log, $http) {
 
+
+  //Mock data
+  $scope.results = [{'name': 'quiz1', 'users': ['kalle, niklas, tomas'], 'playing': true, 'quizId': 'quiz1'},{'name': 'quiz2', 'users': ['kalle, niklas, tomas'], 'playing': false, 'quizId': 'quiz2'}];
   //Get the list the first time
   $http.get('/api/quizList').then(function(response) {
 
     //Fetch all the quizrooms when loading the quizList
     $scope.results = response.data;
+
 
   }).then(function(response) {});
 
@@ -31,6 +35,7 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
   //Join quiz
   $scope.joinGame = function(quizId) {
 
+    $log.debug(quizId);
     //Add the quizId to the rootScope of the user
     $rootScope.quizId = quizId;
     var data = {
