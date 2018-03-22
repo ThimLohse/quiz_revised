@@ -22,6 +22,8 @@ $http.post('/api/signin', req
         $rootScope.user = response.data.userId;
 
         $log.debug("Successfully logged in!");
+
+        $log.debug("username at login: " + $rootScope.user);
         $state.go('app.inside.navbar.dashboard')
 
       }else{
