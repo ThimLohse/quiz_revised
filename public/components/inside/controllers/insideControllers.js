@@ -12,28 +12,36 @@ angular.module('quiz').controller('insideNavCtrl', function($scope, $log, $state
 angular.module('quiz').controller('dashboardCtrl', function($scope, $log) {});
 angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $scope, $log, $http) {
 
-
   //Mock data
-  $scope.results = [{'name': 'quiz1', 'users': ['kalle, niklas, tomas'], 'playing': true, 'quizId': 'quiz1'},{'name': 'quiz2', 'users': ['kalle, niklas, tomas'], 'playing': false, 'quizId': 'quiz2'}];
+  $scope.results = [
+    {
+      'name': 'quiz1',
+      'users': ['kalle, niklas, tomas'],
+      'playing': true,
+      'quizId': 'quiz1'
+    }, {
+      'name': 'quiz2',
+      'users': ['kalle, niklas, tomas'],
+      'playing': false,
+      'quizId': 'quiz2'
+    }
+  ];
   //Get the list the first time
   $http.get('/api/quizList').then(function(response) {
 
     //Fetch all the quizrooms when loading the quizList
     $scope.results = response.data;
 
-
-  }).then(function(response) {
-
-  });
+  }).then(function(response) {});
 
   //join quizlist for asynchronous updates of room status
   socket.emit('joinQuizList');
 
   //listen for updates on all quizrooms
-  socket.on('updateQuizList', function(data) {
+  socket.on('updateQuizList', function(response) {
     //this makes sure that the results is updated with new data
-    $scope.$apply(function(){
-        $scope.results = data;
+    $scope.$apply(function() {
+      $scope.results = response;
     })
 
   });
@@ -106,7 +114,7 @@ angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $s
   socket.on('userJoined', function(data) {
 
     //Make sure that the sidebar list is updated whenever a new user joins
-    $scope.$apply(function(){
+    $scope.$apply(function() {
       $scope.$parent.results = data.users;
     })
 
@@ -133,6 +141,14 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   $scope.waiting = true;
 
   //Mock data
+
+  //Update list of player who have answered
+  socket.on('userAnswered', function(results) {
+    $scope.$apply(function() {
+      $scope.$parent.results = results.users;
+    })
+  });
+
   $scope.$parent.results = [
     {
       'user': 'Kalle'
@@ -151,7 +167,7 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   socket.on('question', function(question) {
 
     //Update all the fields when a new question is served.
-    $scope.$apply(function(){
+    $scope.$apply(function() {
       $scope.waiting = false;
       $scope.question = question.question;
       $scope.alt1 = question.alt1;
@@ -171,18 +187,31 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   };
 
   //Mock
-  $rootScope.tempRes = {'resultList': [{'user': 'Kalle', 'score':10},{'user': 'Nina', 'score':20},{'user': 'Nils', 'score':40}]};
-  socket.on('gameOver', function(data){
+  $rootScope.tempRes = {
+    'resultList': [
+      {
+        'user': 'Kalle',
+        'score': 10
+      }, {
+        'user': 'Nina',
+        'score': 20
+      }, {
+        'user': 'Nils',
+        'score': 40
+      }
+    ]
+  };
+  socket.on('gameOver', function(data) {
     $rootScope.tempRes = data;
     $state.go('app.inside.quiz.tempres');
   });
 
 });
-angular.module('quiz').controller('tempResCtrl', function($rootScope, $state, $scope, $log){
+angular.module('quiz').controller('tempResCtrl', function($rootScope, $state, $scope, $log) {
   $scope.$parent.infoWindow = true;
   $scope.results = $rootScope.tempRes.resultList;
 
-  $scope.done = function(){
+  $scope.done = function() {
     $state.go('app.inside.navbar.dashboard');
   };
 
