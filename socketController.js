@@ -33,6 +33,8 @@ module.exports = function(socket, io) {
     // update the user list for quizList for corresponding quiz
 
     // Need to get a user id in response, not getting a user id at the moment
+    console.log("user id for user joining quiz");
+    console.log(req.user);
     quizList.joinQuiz(req.quizId, 'a');
     var updatedQuizList = quizList.getQuizRoom();
 
