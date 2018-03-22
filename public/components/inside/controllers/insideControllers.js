@@ -55,6 +55,7 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
       'user': $rootScope.user
     };
     socket.emit('joinQuiz', data);
+    $log.debug('username at joinQuiz quiz: ' + $rootScope.user);
 
     //Go to quiz state
     $state.go('app.inside.quiz');
@@ -119,6 +120,7 @@ angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $s
       'quizId': $rootScope.quizId
     };
     socket.emit('startQuiz', data);
+    $log.debug('username at start quiz: ' + $rootScope.user);
     $state.go('app.inside.quiz.playing');
   };
 
