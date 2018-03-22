@@ -24,7 +24,6 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
 
   }).then(function(response) {
 
-    $log.debug("An error with the request has occured: " + response.message)
   });
 
   //join quizlist for asynchronous updates of room status
