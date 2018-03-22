@@ -33,7 +33,7 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
   //listen for updates on all quizrooms
   socket.on('updateQuizList', function(data) {
     //this makes sure that the results is updated with new data
-    $scope.apply(function(){
+    $scope.$apply(function(){
         $scope.results = data;
     })
 
@@ -107,7 +107,7 @@ angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $s
   socket.on('userJoined', function(data) {
 
     //Make sure that the sidebar list is updated whenever a new user joins
-    $scope.apply(function(){
+    $scope.$apply(function(){
       $scope.$parent.results = data.users;
     })
 
@@ -152,7 +152,7 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   socket.on('question', function(question) {
 
     //Update all the fields when a new question is served.
-    $scope.apply(function(){
+    $scope.$apply(function(){
       $scope.waiting = false;
       $scope.question = question.question;
       $scope.alt1 = question.alt1;
