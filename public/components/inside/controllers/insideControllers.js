@@ -22,22 +22,34 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
     $scope.results = response.data;
 
 
-  }).then(function(response) {});
+  }).then(function(response) {
+
+    $log.debug("An error with the request has occured: " + response.message)
+  });
 
   //join quizlist for asynchronous updates of room status
   socket.emit('joinQuizList');
 
   //listen for updates on all quizrooms
   socket.on('updateQuizList', function(data) {
-    $scope.results = data;
+    //this makes sure that the results is updated with new data
+    $scope.apply(function(){
+        $scope.results = data;
+    })
+
   });
 
   //Join quiz
   $scope.joinGame = function(quizId) {
 
     $log.debug(quizId);
+
     //Add the quizId to the rootScope of the user
     $rootScope.quizId = quizId;
+
+    //Announce to the statemanager that the player is playing
+    $rootScope.isPlaying = true;
+
     var data = {
       'quizId': quizId,
       'user': $rootScope.user
@@ -67,7 +79,6 @@ angular.module('quiz').controller('userResultsCtrl', function($scope, $log) {
 });
 angular.module('quiz').controller('quizCtrl', function($rootScope, $state, $scope, $log) {
 
-  //TODO separera logiken mellan waitingcontroller och playing controller?
   $state.go('app.inside.quiz.waiting');
 
 });
@@ -91,9 +102,14 @@ angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $s
     }
   ];
 
-  //är detta informationen om alla användare som ansluter??
+  //Information about all the user that joins the room before the game is started
   socket.on('userJoined', function(data) {
-    $scope.$parent.results = data.users;
+
+    //Make sure that the sidebar list is updated whenever a new user joins
+    $scope.apply(function(){
+      $scope.$parent.results = data.users;
+    })
+
   });
 
   $scope.startGame = function() {
@@ -130,12 +146,18 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
     }
   ];
 
+  //get question from server
   socket.on('question', function(question) {
-    $scope.waiting = false;
-    $scope.question = question.question;
-    $scope.alt1 = question.alt1;
-    $scope.alt2 = question.alt2;
-    $scope.alt3 = question.alt3;
+
+    //Update all the fields when a new question is served.
+    $scope.apply(function(){
+      $scope.waiting = false;
+      $scope.question = question.question;
+      $scope.alt1 = question.alt1;
+      $scope.alt2 = question.alt2;
+      $scope.alt3 = question.alt3;
+    });
+
   });
 
   $scope.answer = function(alternative) {

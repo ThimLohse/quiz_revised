@@ -107,8 +107,13 @@ app.run(['$rootScope','$state', '$log', function($rootScope, $state, $log){
 
   //default value is user is NOT logged in
   $rootScope.isLoggedin = false;
+
+  //default value is user is NOT playing
+  $rootScope.isPlaying = false;
+
   // Thie is fired when a transition begins,
   // i.e. the user changes the url manually or it is a transition initiated by the application
+  // Here we also prevent the user from visiting routers further in the chain of the quiz. Such as going to playing when in waiting, or results when in playing.
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
       // Check if it is a valid state to transition to and if the state is in the inside of the app (using regex)
