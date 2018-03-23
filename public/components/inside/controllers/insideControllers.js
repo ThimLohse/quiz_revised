@@ -77,13 +77,33 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
   });
 
 });
-angular.module('quiz').controller('resultsCtrl', function($scope, $log) {
+angular.module('quiz').controller('resultsCtrl', function($scope, $log, $http) {
 
   //Fetch results here and populate view
+  /*
+  $http.get('/api/results').then(function(response) {
+
+    //Fetch all the results
+    $scope.results = response.data;
+
+  }).then(function(response) {
+  $log.debug('Error when serving request')
+});
+   */
 });
 angular.module('quiz').controller('userResultsCtrl', function($scope, $log) {
 
   //fetch user specific results and populate view
+  /*
+  $http.get('/api/userresults').then(function(response) {
+
+    //Fetch all the results
+    $scope.results = response.data;
+
+  }).then(function(response) {
+  $log.debug('Error when serving request')
+});
+   */
 });
 angular.module('quiz').controller('quizCtrl', function($rootScope, $state, $scope, $log) {
 
@@ -145,6 +165,7 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   //Update list of player who have answered
   socket.on('userAnswered', function(results) {
     $scope.$apply(function() {
+
       $scope.$parent.results = results.users;
     })
   });
@@ -168,6 +189,8 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
 
     //Update all the fields when a new question is served.
     $scope.$apply(function() {
+
+      //enable the play button on a question --> disable on answer
       $scope.waiting = false;
       $scope.question = question.question;
       $scope.alt1 = question.alt1;
@@ -184,6 +207,11 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
       'quizId': $rootScope.quizId
     };
     socket.emit('answer', data);
+
+    //disable buttons before next question  
+    $scope.apply(function(){
+      $scope.waiting = true;
+    });
   };
 
   //Mock
