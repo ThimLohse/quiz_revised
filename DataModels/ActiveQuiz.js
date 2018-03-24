@@ -50,6 +50,57 @@ exports.readyToStartQuiz = function(quizId){
 	return true;
 }
 
+exports.readyForNextQuestion = function(quizId){
+	var quiz = getActiveQuiz(quizId);
+	/*console.log('fhdskh');
+	console.log(quiz);
+	console.log('fhdskh')*/
+	var length = quiz.users.length;
+	for(var i = 0; i < length; i++){
+		if (!quiz.users[i].ready){
+			return false;
+		}
+	}
+	return true;
+}
+
+exports.userIsReady = function(quizId, userId){
+	var quiz = getActiveQuiz(quizId);
+	var user = getUserInQuiz(quiz, userId);
+	user.ready = true;
+}
+
+exports.toggleUsersReady = function(quizId){
+	var quiz = getActiveQuiz(quizId);
+	var l = quiz.users.length;
+	for (var i = 0; i < l; i++){
+		quiz.users[i].ready = false;
+	}
+	quiz.answers = 0;
+}
+
+// Returns if the user has answered or not
+exports.userHasAnswerd = function(quizId, userId){
+	var quiz = getActiveQuiz(quizId);
+	var user = getUserInQuiz(quiz, userId);
+	return user.ready;
+}
+
+// Used to send the list of all users who has answered
+exports.getUsersWhoHasAnswered = function(quizId){
+	var listOfUsers = [];
+	var quiz = getActiveQuiz(quizId);
+	var l = quiz.users.length;
+	for (var i = 0; i < l; i++){
+		if (quiz.users[i].ready == true){
+			var userName = quiz.users[i].userId;
+			listOfUsers.push(userName);
+		}
+	}
+	return {users: listOfUsers};
+	//return listOfUsers
+}
+
 // quiz is the Quiz object coming from the QuizRoom list
 // the instance is used to create an actual quiz, with
 // questions and answers.
@@ -101,6 +152,10 @@ exports.startQuiz = function(quiz, userId, io){
 		}
 
 		if(start){
+			// Toggle the ready state for the single user of the quiz, there will only be one user in the quiz if start
+			// would be true
+			activeQuiz.users[0].ready = false;
+
 			console.log('game should start and send fucking answer');
 			var currentQuestion = activeQuiz.currentQuestion;
 			activeQuiz.currentQuestion ++;
@@ -133,8 +188,17 @@ exports.getResultsForQuiz = function(quizId){
 		var res = {user: user, score: score};
 		results.push(res);
 	}
+	// Sort the results before returning the list
+	results.sort(compareIndexFound);
 	endActiveQuiz(quizId);
 	return {resultList: results};
+}
+
+// Help function for sorting the results
+function compareIndexFound(a, b) {
+  if (a.score < b.score) { return 1; }
+  if (a.score > b.score) { return -1; }
+  return 0;
 }
 
 function endActiveQuiz(quizId){
@@ -164,7 +228,6 @@ exports.getActiveQuiz = function(quizId){
 	// Returns true is the quiz can not be found 
 	return true;
 }
-
 
 function getActiveQuiz(quizId){
 	/*console.log('fhdsksvaddvah');
@@ -221,10 +284,12 @@ exports.userAnswer = function(quizId, user, answer){
 	console.log('afdfaf');
 	var quiz = getActiveQuiz(quizId);
 	var currentQuestion = quiz.currentQuestion;
-	quiz.answers ++;
-	if (answer == quiz.correct[currentQuestion]){
+	if (answer == quiz.correct[currentQuestion-1]){
+		quiz.answers ++;
 		var user = getUserInQuiz(quiz, user);
-		user.score ++;
+		//user.score ++;
+		// Simple implementation to reduce points for the players who answers late
+		user.score += 1/(quiz.answers);
 		return 1;
 	}
 	return 0;

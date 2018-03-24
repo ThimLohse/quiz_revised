@@ -73,4 +73,18 @@ module.exports = function(app, db) {
 		var quizzes = quizRoom.getQuizRoom();
 		res.json(quizzes);
 	});
+
+	app.get('/api/topScores', function(req, res) {
+		db.results.findAll({order: [['points', 'DESC']]}).then(function (result){
+			res.json(result);
+		});
+	});
+
+	app.post('/api/userScores', function(req,res) {
+		db.results.findAll({where: {userId: req.body.user}, order: [['points', 'DESC']]}).then(function (result){
+			res.json(result);
+		});
+	});
 }
+
+// Post.findAll({ limit: 10, order: '"updatedAt" DESC' })

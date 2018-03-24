@@ -58,13 +58,19 @@ module.exports = function(socket, io) {
     console.log(activeQuiz.getActiveQuiz('Active quizzzzz!!!!!!!'));
     console.log(activeQuiz.getActiveQuiz(req.quizId));
 
+    // A new active quiz should be created
     if (activeQuiz.getActiveQuiz(req.quizId) === true){
       var quiz = quizList.getQuiz(req.quizId);
       console.log('the current user is');
       console.log(req.user);
       activeQuiz.startQuiz(quiz, req.user, io);
-    }else{
+    }else{ // The active quiz already exists but has not yet started since all users are not ready yet
+      // Indicate that the user is ready to play
+      activeQuiz.userIsReady(req.quizId, req.user);
       if(activeQuiz.readyToStartQuiz(req.quizId)){
+        // Change toggle all user.ready to false
+        activeQuiz.toggleUsersReady(req.quizId);
+        // Send out the question to all the users
         io.to(req.quizId).emit('question', activeQuiz.nextQuestion(req.quizId));
       }
     }
@@ -75,11 +81,27 @@ module.exports = function(socket, io) {
   socket.on('answer', function(req){
 
     console.log('User has an answer');
-    activeQuiz.userAnswer(req.quizId, req.userId, req.answer);
+    // Register the answer from the user if ready = false -> user has not yet answered
+    console.log('The user is answering ! ! 1 1 1 1! 1! !')
+    console.log('quizId: ' + req.quizId + ' userId: ' + req.userId)
+    if (!activeQuiz.userHasAnswerd(req.quizId, req.userId)){
+      activeQuiz.userAnswer(req.quizId, req.userId, req.answer);
+      // Change the sytate of the user so it can not answer more times on the same question
+      activeQuiz.userIsReady(req.quizId, req.userId);
+      // Send out a uppdate that the user has answered
+      var data = activeQuiz.getUsersWhoHasAnswered(req.quizId);
 
-    if (activeQuiz.timeForNextQuestion(req.quizId)){
+      console.log("new list of users who has answered " + data);
+      io.to(req.quizId).emit('updateAnswerList', data); // ----------------- Implement on client side -----------------
 
-      //Check if end of game
+    }else{
+      console.log(req.user + ' Sent an answer but has already answered FFS!!!');
+    }
+
+    // All the users has toggeled to ready = true
+    if (activeQuiz.readyForNextQuestion(req.quizId)){
+
+      // Check if this was the last question, in such case show results, else emit next question
       if (activeQuiz.endOfGame(req.quizId)){
         console.log('register results');
         activeQuiz.registerResults(req.quizId);
@@ -98,14 +120,16 @@ module.exports = function(socket, io) {
 
 
       }else{
+
+      // Change toggle all user.ready to false
+      activeQuiz.toggleUsersReady(req.quizId);
+
+      // Emit the next question to all the users
         console.log('Time for a new question');
         var data = activeQuiz.nextQuestion(req.quizId);
         console.log(data);
-        io.to(req.quizId).emit('question', data);        
+        io.to(req.quizId).emit('question', data); 
       }
-
-
-
     }
   });
 
