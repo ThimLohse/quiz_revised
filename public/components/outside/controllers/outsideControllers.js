@@ -47,6 +47,7 @@ $http.post('/api/signin', req
     //TODO REMOVE THE BACKDOOR AFTER TESTING
     if(username === 'admin' && password === 'admin'){
       $rootScope.isLoggedin = true;
+      $rootScope.user = username;
       $state.go('app.inside.navbar.dashboard')
     }
 
