@@ -14,8 +14,8 @@ module.exports = function(socket, io) {
     console.log('New browser joins the quizList');
     socket.join('quizList');
     
-    var updatedQuizList = quizList.getQuizRoom();
-    io.to('quizList').emit('updateQuizList', updatedQuizList);
+    //var updatedQuizList = quizList.getQuizRoom();
+    //io.to('quizList').emit('updateQuizList', updatedQuizList);
   });
 
   // For when a user leaves the quizzes view
@@ -35,7 +35,7 @@ module.exports = function(socket, io) {
     // Need to get a user id in response, not getting a user id at the moment
     console.log("user id for user joining quiz");
     console.log(req.user);
-    quizList.joinQuiz(req.quizId, 'a');
+    quizList.joinQuiz(req.quizId, req.user);
     var updatedQuizList = quizList.getQuizRoom();
 
     console.log('User joins quiz');
@@ -88,10 +88,14 @@ module.exports = function(socket, io) {
         var results = activeQuiz.getResultsForQuiz(req.quizId);
         console.log('results');
         console.log(results);
-        io.to(req.quizId).emit('gameOver', {results});
+        io.to(req.quizId).emit('gameOver', results);
 
         // Make the quiz appare as playable in the quiz list
         quizList.quizEnded(req.quizId);
+        // Send out quizRoom change
+        var updatedQuizList = quizList.getQuizRoom();
+        io.to('quizList').emit('updateQuizList', updatedQuizList);
+
 
       }else{
         console.log('Time for a new question');

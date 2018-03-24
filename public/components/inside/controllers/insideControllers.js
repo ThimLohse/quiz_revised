@@ -30,10 +30,12 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
   socket.emit('joinQuizList');
 
   //listen for updates on all quizrooms
-  socket.on('updateQuizList', function(data) {
+  socket.on('updateQuizList', function(response) {
+
+    $log.debug("update quiz: " + response);
     //this makes sure that the results is updated with new data
     $scope.$apply(function(){
-        $scope.results = data;
+        $scope.results = response;
     })
 
   });
@@ -150,6 +152,7 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   //get question from server
   socket.on('question', function(question) {
 
+    $log.debug(question.question);
     //Update all the fields when a new question is served.
     $scope.$apply(function(){
       $scope.waiting = false;

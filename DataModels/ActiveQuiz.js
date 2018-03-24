@@ -130,10 +130,22 @@ exports.getResultsForQuiz = function(quizId){
 	for (var i = 0; i < length; i++){
 		var user = activeQuiz.users[i].userId;
 		var score = activeQuiz.users[i].score;
-		var res = {userId: user, score: score};
+		var res = {user: user, score: score};
 		results.push(res);
 	}
+	endActiveQuiz(quizId);
 	return {resultList: results};
+}
+
+function endActiveQuiz(quizId){
+	var length = activeQuizzes.length;
+	for(var i = 0; i < length; i++){
+
+		if(activeQuizzes[i].quizId == quizId){
+			// Remove this quiz
+			activeQuizzes.splice(i,1);
+		}
+	}
 }
 
 exports.getActiveQuiz = function(quizId){
