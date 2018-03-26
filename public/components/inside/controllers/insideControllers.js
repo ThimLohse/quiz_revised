@@ -80,30 +80,30 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
 angular.module('quiz').controller('resultsCtrl', function($scope, $log, $http) {
 
   //Fetch results here and populate view
-  /*
-  $http.get('/api/results').then(function(response) {
+
+  $http.get('/api/topScores').then(function(response) {
 
     //Fetch all the results
-    $scope.results = response.data;
+    $scope.results = response.results;
 
   }).then(function(response) {
   $log.debug('Error when serving request')
 });
-   */
+
 });
-angular.module('quiz').controller('userResultsCtrl', function($scope, $log) {
+angular.module('quiz').controller('userResultsCtrl', function($rootScope, $scope, $log) {
 
   //fetch user specific results and populate view
-  /*
-  $http.get('/api/userresults').then(function(response) {
+  var req = {'user': $rootScope.user};
+  $http.post('/api/userScores', req).then(function(response) {
 
     //Fetch all the results
-    $scope.results = response.data;
+    $scope.results = response.results;
 
   }).then(function(response) {
   $log.debug('Error when serving request')
 });
-   */
+
 });
 angular.module('quiz').controller('quizCtrl', function($rootScope, $state, $scope, $log) {
 
@@ -157,10 +157,7 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   //We need to reference the parent scope as we are in a child scope to quizCtrl.
   $scope.$parent.playerInfo = "Player who have answered";
 
-  //All answer buttons are disabled before first question.
-  $scope.waiting = true;
-
-  //Mock data
+  $rootScope.hasAnswered = true;
 
   //Update list of player who have answered
   socket.on('userAnswered', function(results) {
@@ -191,7 +188,13 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
     $scope.$apply(function() {
 
       //enable the play button on a question --> disable on answer
-      $scope.waiting = false;
+      $rootScope.hasAnswered = false;
+      $scope.choose1 = false;
+      $scope.choose2 = false;
+      $scope.choose3 = false;
+      $scope.playCard1 = "playCard";
+      $scope.playCard2 = "playCard";
+      $scope.playCard3 = "playCard";
       $scope.question = question.question;
       $scope.alt1 = question.alt1;
       $scope.alt2 = question.alt2;
@@ -201,17 +204,38 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   });
 
   $scope.answer = function(alternative) {
-    var data = {
-      'userId': $rootScope.user,
-      'answer': alternative,
-      'quizId': $rootScope.quizId
-    };
-    socket.emit('answer', data);
 
-    //disable buttons before next question  
-    $scope.apply(function(){
-      $scope.waiting = true;
-    });
+    if(!$rootScope.hasAnswered){
+      var data = {
+        'userId': $rootScope.user,
+        'answer': alternative,
+        'quizId': $rootScope.quizId
+      };
+
+      switch(alternative){
+        case "alt1":{
+          $scope.playCard1 = "playCardChosen";
+          $scope.playCard2 = "playCardNotChosen";
+          $scope.playCard3 = "playCardNotChosen";
+          break;
+        }
+        case "alt2":{
+          $scope.playCard1 = "playCardNotChosen";
+          $scope.playCard2 = "playCardChosen";
+          $scope.playCard3 = "playCardNotChosen";
+          break;
+        }
+        case "alt3":{
+          $scope.playCard1 = "playCardNotChosen";
+          $scope.playCard2 = "playCardNotChosen";
+          $scope.playCard3 = "playCardChosen";
+          break;
+        }
+      }
+      $rootScope.hasAnswered = true;
+      socket.emit('answer', data);
+      //disable buttons before next question is done on the server
+    }
   };
 
   //Mock
