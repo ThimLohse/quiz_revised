@@ -41,6 +41,17 @@ function User (userId){
 	this.ready = false;
 }
 
+exports.getUsersForQuiz = function(quizId){
+	var quiz = getQuiz(quizId);
+	var l = quiz.users.length;
+	var userList = [];
+	for (var i = 0; i < l; i++){
+		var user = quiz.users[i];
+		userList.push({userId: user.userId});
+	}
+	return {users: userList};
+}
+
 exports.getQuizRoom = function(){
 	return QuizRoom;
 } 
@@ -60,6 +71,17 @@ exports.quizEnded = function(id){
 		if (QuizRoom[i].quizId == id){
 			QuizRoom[i].playing = false;
 			QuizRoom[i].users = [];
+		}
+	}
+}
+
+function getQuiz(quizId){
+	console.log(QuizRoom)
+	var length = QuizRoom.length;
+	for(var i = 0; i < length; i++){
+		console.log(QuizRoom[i].quizId)
+		if (QuizRoom[i].quizId == quizId){
+			return QuizRoom[i];
 		}
 	}
 }

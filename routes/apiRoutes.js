@@ -76,15 +76,18 @@ module.exports = function(app, db) {
 
 	app.get('/api/topScores', function(req, res) {
 		db.results.findAll({order: [['points', 'DESC']]}).then(function (result){
-			res.json(result);
+			data = {results: result};
+			console.log(data);
+			res.json(data);
 		});
 	});
 
 	app.post('/api/userScores', function(req,res) {
 		db.results.findAll({where: {userId: req.body.user}, order: [['points', 'DESC']]}).then(function (result){
-			res.json(result);
+			res.json({results: result});
 		});
 	});
+
 }
 
 // Post.findAll({ limit: 10, order: '"updatedAt" DESC' })

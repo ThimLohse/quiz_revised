@@ -94,7 +94,7 @@ exports.getUsersWhoHasAnswered = function(quizId){
 	for (var i = 0; i < l; i++){
 		if (quiz.users[i].ready == true){
 			var userName = quiz.users[i].userId;
-			listOfUsers.push(userName);
+			listOfUsers.push({userId: userName});
 		}
 	}
 	return {users: listOfUsers};

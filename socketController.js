@@ -41,6 +41,10 @@ module.exports = function(socket, io) {
     console.log('User joins quiz');
     console.log(updatedQuizList);
     io.to('quizList').emit('updateQuizList', updatedQuizList);
+
+    var data = quizList.getUsersForQuiz(req.quizId);
+    console.log(data);
+    io.to(req.quizId).emit('userJoined', data);
   });
 
   socket.on('startQuiz', function(req){
@@ -77,6 +81,12 @@ module.exports = function(socket, io) {
 
   });
 
+  socket.on('userJoined', function(req){
+    var data = quizList.getUsersForQuiz(req.quizId);
+    console.log(data);
+    io.to(req.quizId).emit('userJoined', data);
+  })
+
 
   socket.on('answer', function(req){
 
@@ -92,7 +102,8 @@ module.exports = function(socket, io) {
       var data = activeQuiz.getUsersWhoHasAnswered(req.quizId);
 
       console.log("new list of users who has answered " + data);
-      io.to(req.quizId).emit('updateAnswerList', data); // ----------------- Implement on client side -----------------
+
+      io.to(req.quizId).emit('userAnswered', data); // ----------------- Implement on client side -----------------
 
     }else{
       console.log(req.user + ' Sent an answer but has already answered FFS!!!');
