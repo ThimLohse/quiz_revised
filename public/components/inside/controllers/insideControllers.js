@@ -80,25 +80,25 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
 angular.module('quiz').controller('resultsCtrl', function($scope, $log, $http) {
 
   //Fetch results here and populate view
-
   $http.get('/api/topScores').then(function(response) {
 
     //Fetch all the results
-    $scope.results = response.results;
+    $scope.scores = response.data.results;
 
   }).then(function(response) {
   $log.debug('Error when serving request')
-});
+  });
 
 });
-angular.module('quiz').controller('userResultsCtrl', function($rootScope, $scope, $log) {
+
+angular.module('quiz').controller('userResultsCtrl', function($http, $rootScope, $scope, $log) {
 
   //fetch user specific results and populate view
   var req = {'user': $rootScope.user};
   $http.post('/api/userScores', req).then(function(response) {
 
     //Fetch all the results
-    $scope.results = response.results;
+    $scope.scores = response.data.results;
 
   }).then(function(response) {
   $log.debug('Error when serving request')
@@ -112,7 +112,9 @@ angular.module('quiz').controller('quizCtrl', function($rootScope, $state, $scop
 });
 angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $scope, $log) {
   $scope.$parent.playerInfo = "Players in room";
-  $scope.$parent.results = [
+
+
+  /*$scope.$parent.results = [
     {
       'user': 'Kalle'
     }, {
@@ -129,7 +131,11 @@ angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $s
       'user': 'Bengt'
     }
   ];
+  */
 
+ //Tell the server that you have joined so that the you can obtain the waitinglist;
+  var req = {'quizId': $rootScope.quizId};
+  socket.emit('userJoined', req);
   //Information about all the user that joins the room before the game is started
   socket.on('userJoined', function(data) {
 
@@ -157,12 +163,11 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   //We need to reference the parent scope as we are in a child scope to quizCtrl.
   $scope.$parent.playerInfo = "Player who have answered";
 
-  $rootScope.hasAnswered = true;
+  //$rootScope.hasAnswered = true;
 
   //Update list of player who have answered
   socket.on('userAnswered', function(results) {
     $scope.$apply(function() {
-
       $scope.$parent.results = results.users;
     })
   });
@@ -199,6 +204,7 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
       $scope.alt1 = question.alt1;
       $scope.alt2 = question.alt2;
       $scope.alt3 = question.alt3;
+      $scope.$parent.results = [];
     });
 
   });
