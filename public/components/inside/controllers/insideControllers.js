@@ -80,30 +80,30 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
 angular.module('quiz').controller('resultsCtrl', function($scope, $log, $http) {
 
   //Fetch results here and populate view
-  /*
-  $http.get('/api/results').then(function(response) {
+  
+  $http.get('/api/topScores').then(function(response) {
 
     //Fetch all the results
     $scope.results = response.data;
 
   }).then(function(response) {
-  $log.debug('Error when serving request')
-});
-   */
+    $log.debug('Error when serving request')
+  });
+   
 });
 angular.module('quiz').controller('userResultsCtrl', function($scope, $log) {
 
   //fetch user specific results and populate view
-  /*
-  $http.get('/api/userresults').then(function(response) {
+  
+  $http.get('/api/userScores').then(function(response) {
 
     //Fetch all the results
     $scope.results = response.data;
 
   }).then(function(response) {
-  $log.debug('Error when serving request')
-});
-   */
+    $log.debug('Error when serving request')
+  });
+   
 });
 angular.module('quiz').controller('quizCtrl', function($rootScope, $state, $scope, $log) {
 

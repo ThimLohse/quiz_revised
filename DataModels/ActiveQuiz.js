@@ -305,19 +305,8 @@ exports.timeForNextQuestion = function(quizId){
 	return false;
 }
 
-// This function will register the results of the quiz to the database
-exports.registerResults = function(quizId){
-
-	var quiz = getActiveQuiz(quizId);
-	var nrUsers = quiz.users.length;
-	console.log('in results');
-	console.log(quiz);
-	console.log(nrUsers);
-	for(var i = 0; i < nrUsers; i++){
-		var user = quiz.users[i].userId
-		var score = quiz.users[i].score
-		console.log(user);
-		db.results.findAll({where: {userId: user} }).then(function(result){
+function addResult(user, quizId, score){
+	db.results.findAll({where: {userId: user, quizId: quizId} }).then(function(result){
 			console.log('in the fucking function');
 			if(result.length > 0){ // exists, do an uppdate
 				console.log('making uppdate to results');
@@ -329,13 +318,32 @@ exports.registerResults = function(quizId){
 			}else{ // does not exist in database create a new one
 				console.log('creating new results');
 				db.results.create({
+					quizId: quizId,
 					userId: user,
 					points: score,
 				});
 			} 
 		});
+}
+
+// This function will register the results of the quiz to the database
+exports.registerResults = function(quizId){
+
+	var quiz = getActiveQuiz(quizId);
+	var nrUsers = quiz.users.length;
+	console.log('in results');
+	console.log(quiz);
+	console.log(nrUsers);
+	var user = ''
+	score = 0
+	for(var i = 0; i < nrUsers; i++){
+		user = quiz.users[i].userId
+		score = quiz.users[i].score
+		console.log(user);
+		addResult(user, quizId, score)
 	}
 }
+
 
 
 
