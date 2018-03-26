@@ -8,19 +8,19 @@
         </div>
       </div>
       <div class="card-content">
-        <div class="card clickable" ng-disabled="{{waiting}}" ng-click="answer('alt1')">
+        <div class="card" id="{{playCard1}}" ng-model="choose1" ng-click="answer('alt1')">
           <div class="card-content">
             <h1 class="subtitle is-5">{{alt1}}</h1>
           </div>
         </div>
         <br>
-        <div class="card clickable" ng-disabled="{{waiting}}" ng-click="answer('alt2')">
+        <div class="card" id="{{playCard2}}" ng-model="choose2" ng-click="answer('alt2')">
           <div class="card-content">
             <h1 class="subtitle is-5">{{alt2}}</h1>
           </div>
         </div>
         <br>
-        <div class="card clickable" ng-disabled="{{waiting}}" ng-click="answer('alt3')">
+        <div class="card" id="{{playCard3}}" ng-model="choose3" ng-click="answer('alt3')">
           <div class="card-content">
             <h1 class="subtitle is-5">{{alt3}}</h1>
           </div>
