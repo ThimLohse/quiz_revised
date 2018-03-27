@@ -80,20 +80,18 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
 angular.module('quiz').controller('resultsCtrl', function($scope, $log, $http) {
 
   //Fetch results here and populate view
-
   $http.get('/api/topScores').then(function(response) {
 
     //Fetch all the results
-    $log.debug(response);
     $scope.scores = response.data.results;
 
   }).then(function(response) {
-    $log.debug('Error when serving request')
+  $log.debug('Error when serving request')
   });
-   
+
 });
 
-angular.module('quiz').controller('userResultsCtrl', function($rootScope, $scope, $log,  $http) {
+angular.module('quiz').controller('userResultsCtrl', function($http, $rootScope, $scope, $log) {
 
   //fetch user specific results and populate view
   var req = {'user': $rootScope.user};
@@ -115,6 +113,8 @@ angular.module('quiz').controller('quizCtrl', function($rootScope, $state, $scop
 });
 angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $scope, $log) {
   $scope.$parent.playerInfo = "Players in room";
+
+
   /*$scope.$parent.results = [
     {
       'user': 'Kalle'
@@ -131,8 +131,10 @@ angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $s
     }, {
       'user': 'Bengt'
     }
-  ];*/
+  ];
+  */
 
+ //Tell the server that you have joined so that the you can obtain the waitinglist;
   var req = {'quizId': $rootScope.quizId};
   socket.emit('userJoined', req);
   //Information about all the user that joins the room before the game is started
@@ -146,13 +148,14 @@ angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $s
   });
 
   $scope.startGame = function() {
-    //vad ska skickas här med socket?
+
     var data = {
       'user': $rootScope.user,
       'quizId': $rootScope.quizId
     };
     socket.emit('startQuiz', data);
     $log.debug('username at start quiz: ' + $rootScope.user);
+
     $state.go('app.inside.quiz.playing');
   };
 
@@ -162,17 +165,20 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   //We need to reference the parent scope as we are in a child scope to quizCtrl.
   $scope.$parent.playerInfo = "Player who have answered";
 
-  //$rootScope.hasAnswered = true;
+
+    //Notify the server that this user is ready to recieve the first question
+    var req = {'quizId': $rootScope.quizId};
+    socket.emit('ready', req);
 
   //Update list of player who have answered
   socket.on('userAnswered', function(results) {
     $scope.$apply(function() {
-
       $scope.$parent.results = results.users;
     })
   });
 
-  /*$scope.$parent.results = [
+  /*
+  $scope.$parent.results = [
     {
       'user': 'Kalle'
     }, {
@@ -184,7 +190,10 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
     }, {
       'user': 'Bengt'
     }
-  ];*/
+  ];
+  */
+
+
 
   //get question from server
   socket.on('question', function(question) {
@@ -206,13 +215,11 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
       $scope.alt2 = question.alt2;
       $scope.alt3 = question.alt3;
       $scope.$parent.results = [];
-      
     });
 
   });
 
   $scope.answer = function(alternative) {
-
     if(!$rootScope.hasAnswered){
       var data = {
         'userId': $rootScope.user,
@@ -246,7 +253,26 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
     }
   };
 
-  //Mock
+  //Get answer status from server
+  socket.on('answer', function(res){
+    var audio;
+    switch(res.status){
+      case 'true':{
+        audio = new Audio("../../../shared/right.mp3");
+        //audio = new Audio("../../../shared/right.ogg");
+        break;
+      }
+      case 'false':{
+        audio = new Audio("../../../shared/wrong.mp3");
+        //audio = new Audio("../../../shared/wrong.ogg");
+        break;
+      }
+    }
+    audio.play();
+  });
+
+  //Mock results
+  /*
   $rootScope.tempRes = {
     'resultList': [
       {
@@ -261,6 +287,8 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
       }
     ]
   };
+  /
+  */
   socket.on('gameOver', function(data) {
     $rootScope.tempRes = data;
     $state.go('app.inside.quiz.tempres');
