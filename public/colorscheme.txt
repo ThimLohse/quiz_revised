@@ -4,3 +4,6 @@ Light orange: #F0A878
 Light blue: #90C0D8
 Mid blue: #4890A8
 Dark blue: #186078
+
+Success: #22d15f
+Danger: #fe3860
