@@ -140,6 +140,7 @@ app.run(['$rootScope','$state', '$log', function($rootScope, $state, $log){
       $log.debug("rootscope: " + $rootScope.isLoggedin);
 
     }
+    
 
   });
 }]);

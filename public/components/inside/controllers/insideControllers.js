@@ -147,13 +147,14 @@ angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $s
   });
 
   $scope.startGame = function() {
-    //vad ska skickas här med socket?
+
     var data = {
       'user': $rootScope.user,
       'quizId': $rootScope.quizId
     };
     socket.emit('startQuiz', data);
     $log.debug('username at start quiz: ' + $rootScope.user);
+
     $state.go('app.inside.quiz.playing');
   };
 
@@ -163,7 +164,10 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   //We need to reference the parent scope as we are in a child scope to quizCtrl.
   $scope.$parent.playerInfo = "Player who have answered";
 
-  //$rootScope.hasAnswered = true;
+
+    //Notify the server that this user is ready to recieve the first question
+    var req = {'quizId': $rootScope.quizId};
+    socket.emit('ready', req);
 
   //Update list of player who have answered
   socket.on('userAnswered', function(results) {
@@ -172,6 +176,7 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
     })
   });
 
+  /*
   $scope.$parent.results = [
     {
       'user': 'Kalle'
@@ -185,6 +190,9 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
       'user': 'Bengt'
     }
   ];
+  */
+
+
 
   //get question from server
   socket.on('question', function(question) {
@@ -210,7 +218,6 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   });
 
   $scope.answer = function(alternative) {
-
     if(!$rootScope.hasAnswered){
       var data = {
         'userId': $rootScope.user,
@@ -244,7 +251,26 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
     }
   };
 
-  //Mock
+  //Get answer status from server
+  socket.on('answer', function(res){
+    var audio;
+    switch(res.status){
+      case 'true':{
+        audio = new Audio("../../../shared/right.mp3");
+        //audio = new Audio("../../../shared/right.ogg");
+        break;
+      }
+      case 'false':{
+        audio = new Audio("../../../shared/wrong.mp3");
+        //audio = new Audio("../../../shared/wrong.ogg");
+        break;
+      }
+    }
+    audio.play();
+  });
+
+  //Mock results
+  /*
   $rootScope.tempRes = {
     'resultList': [
       {
@@ -259,6 +285,8 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
       }
     ]
   };
+  /
+  */
   socket.on('gameOver', function(data) {
     $rootScope.tempRes = data;
     $state.go('app.inside.quiz.tempres');
