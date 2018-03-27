@@ -114,26 +114,6 @@ angular.module('quiz').controller('quizCtrl', function($rootScope, $state, $scop
 angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $scope, $log) {
   $scope.$parent.playerInfo = "Players in room";
 
-
-  /*$scope.$parent.results = [
-    {
-      'user': 'Kalle'
-    }, {
-      'user': 'Stefan'
-    }, {
-      'user': 'Niklas'
-    }, {
-      'user': 'Fanny'
-    }, {
-      'user': 'Lisa'
-    }, {
-      'user': 'Nadja'
-    }, {
-      'user': 'Bengt'
-    }
-  ];
-  */
-
  //Tell the server that you have joined so that the you can obtain the waitinglist;
   var req = {'quizId': $rootScope.quizId};
   socket.emit('userJoined', req);
@@ -177,24 +157,6 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
     })
   });
 
-  /*
-  $scope.$parent.results = [
-    {
-      'user': 'Kalle'
-    }, {
-      'user': 'Stefan'
-    }, {
-      'user': 'Niklas'
-    }, {
-      'user': 'Nadja'
-    }, {
-      'user': 'Bengt'
-    }
-  ];
-  */
-
-
-
   //get question from server
   socket.on('question', function(question) {
 
@@ -226,27 +188,6 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
         'answer': alternative,
         'quizId': $rootScope.quizId
       };
-
-      switch(alternative){
-        case "alt1":{
-          $scope.playCard1 = "playCardChosen";
-          $scope.playCard2 = "playCardNotChosen";
-          $scope.playCard3 = "playCardNotChosen";
-          break;
-        }
-        case "alt2":{
-          $scope.playCard1 = "playCardNotChosen";
-          $scope.playCard2 = "playCardChosen";
-          $scope.playCard3 = "playCardNotChosen";
-          break;
-        }
-        case "alt3":{
-          $scope.playCard1 = "playCardNotChosen";
-          $scope.playCard2 = "playCardNotChosen";
-          $scope.playCard3 = "playCardChosen";
-          break;
-        }
-      }
       $rootScope.hasAnswered = true;
       socket.emit('answer', data);
       //disable buttons before next question is done on the server
@@ -258,11 +199,51 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
     var audio;
     switch(res.status){
       case true:{
+        switch(res.alt){
+          case "alt1":{
+            $scope.playCard1 = "playCardRight";
+            $scope.playCard2 = "playCardNotChosen";
+            $scope.playCard3 = "playCardNotChosen";
+            break;
+          }
+          case "alt2":{
+            $scope.playCard1 = "playCardNotChosen";
+            $scope.playCard2 = "playCardRight";
+            $scope.playCard3 = "playCardNotChosen";
+            break;
+          }
+          case "alt3":{
+            $scope.playCard1 = "playCardNotChosen";
+            $scope.playCard2 = "playCardNotChosen";
+            $scope.playCard3 = "playCardRight";
+            break;
+          }
+        }
         audio = new Audio("../../../shared/right.mp3");
         //audio = new Audio("../../../shared/right.ogg");
         break;
       }
       case false:{
+        switch(res.alt){
+          case "alt1":{
+            $scope.playCard1 = "playCardWrong";
+            $scope.playCard2 = "playCardNotChosen";
+            $scope.playCard3 = "playCardNotChosen";
+            break;
+          }
+          case "alt2":{
+            $scope.playCard1 = "playCardNotChosen";
+            $scope.playCard2 = "playCardWrong";
+            $scope.playCard3 = "playCardNotChosen";
+            break;
+          }
+          case "alt3":{
+            $scope.playCard1 = "playCardNotChosen";
+            $scope.playCard2 = "playCardNotChosen";
+            $scope.playCard3 = "playCardWrong";
+            break;
+          }
+        }
         audio = new Audio("../../../shared/wrong.mp3");
         //audio = new Audio("../../../shared/wrong.ogg");
         break;
@@ -271,24 +252,7 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
     audio.play();
   });
 
-  //Mock results
-  /*
-  $rootScope.tempRes = {
-    'resultList': [
-      {
-        'user': 'Kalle',
-        'score': 10
-      }, {
-        'user': 'Nina',
-        'score': 20
-      }, {
-        'user': 'Nils',
-        'score': 40
-      }
-    ]
-  };
-  /
-  */
+
   socket.on('gameOver', function(data) {
     $rootScope.tempRes = data;
     $state.go('app.inside.quiz.tempres');
