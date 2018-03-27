@@ -75,17 +75,23 @@ module.exports = function(socket, io) {
         // Change toggle all user.ready to false
         activeQuiz.toggleUsersReady(req.quizId);
         // Send out the question to all the users
-        io.to(req.quizId).emit('question', activeQuiz.nextQuestion(req.quizId));
+        //io.to(req.quizId).emit('question', activeQuiz.nextQuestion(req.quizId));
       }
     }
 
+  });
+
+  socket.on('ready', function(req){
+    if (activeQuiz.readyToSendFirstQuestion(req.quizId)){
+      io.to(req.quizId).emit('question', activeQuiz.nextQuestion(req.quizId));
+    }
   });
 
   socket.on('userJoined', function(req){
     var data = quizList.getUsersForQuiz(req.quizId);
     console.log(data);
     io.to(req.quizId).emit('userJoined', data);
-  })
+  });
 
 
   socket.on('answer', function(req){
@@ -94,8 +100,17 @@ module.exports = function(socket, io) {
     // Register the answer from the user if ready = false -> user has not yet answered
     console.log('The user is answering ! ! 1 1 1 1! 1! !')
     console.log('quizId: ' + req.quizId + ' userId: ' + req.userId)
+
+
     if (!activeQuiz.userHasAnswerd(req.quizId, req.userId)){
-      activeQuiz.userAnswer(req.quizId, req.userId, req.answer);
+      var answer = activeQuiz.userAnswer(req.quizId, req.userId, req.answer);
+
+      if (answer == 1) {
+         io.emit('answer', {status: true}); // Might have to change
+      }else{
+        io.emit('answer', {status: false});
+      }
+
       // Change the sytate of the user so it can not answer more times on the same question
       activeQuiz.userIsReady(req.quizId, req.userId);
       // Send out a uppdate that the user has answered

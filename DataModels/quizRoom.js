@@ -115,7 +115,7 @@ function createQizRoom(result){
 	var quiz;
 	for (var i = 0; i < length; i++){
 		q = result[i];
-		quiz = new Quiz(q.name, q.id, q.level, q.genre);
+		quiz = new Quiz(q.name, q.quizId, q.level, q.genre);
 		list.push(quiz);
 	}
 	return list;

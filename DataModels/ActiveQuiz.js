@@ -26,6 +26,8 @@ function ActiveQuiz (quizId, name, users, questions, alt1, alt2, alt3, correct, 
 	this.currentQuestion = 0;
 	// Variable to keep count of how many of the players has answered
 	this.answers = 0;
+	// To check when everybody is ready to start
+	this.ready = 0
 }
 
 function User (userId) {
@@ -34,6 +36,15 @@ function User (userId) {
 	this.ready = false;
 }
 
+exports.readyToSendFirstQuestion = function(quizId){
+	var quiz = getActiveQuiz(quizId);
+	if (quiz.ready == quiz.users.length){
+		return true
+	}else{
+		quiz.ready += 1
+		return false
+	}
+}
 
 
 exports.readyToStartQuiz = function(quizId){
@@ -308,21 +319,21 @@ exports.timeForNextQuestion = function(quizId){
 function addResult(user, quizId, score){
 	db.results.findAll({where: {userId: user, quizId: quizId} }).then(function(result){
 			console.log('in the fucking function');
-			if(result.length > 0){ // exists, do an uppdate
+			/*if(result.length > 0){ // exists, do an uppdate
 				console.log('making uppdate to results');
 				var totScore = result[0].points + score;
 				db.results.update(
    					{points: totScore},
-   					{where: {userId: user}}
+   					{where: {userId: user, quizId: quizId}}
  					);	
-			}else{ // does not exist in database create a new one
+			}else{*/ // does not exist in database create a new one
 				console.log('creating new results');
 				db.results.create({
 					quizId: quizId,
 					userId: user,
 					points: score,
 				});
-			} 
+			/*}*/ 
 		});
 }
 
