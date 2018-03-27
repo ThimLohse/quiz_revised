@@ -351,7 +351,7 @@ exports.registerResults = function(quizId){
 		user = quiz.users[i].userId
 		score = quiz.users[i].score
 		console.log(user);
-		addResult(user, quizId, score)
+		addResult(user, activeQuiz.name, score)
 	}
 }
 

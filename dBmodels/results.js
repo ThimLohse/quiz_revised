@@ -3,7 +3,7 @@
 module.exports = function(sequelize, DataType) {
 	var Results = sequelize.define('results', {
 		quizId: {
-			type: DataType.INTEGER,
+			type: DataType.STRING,
 			allowNull: false
 		},
 		userId: {

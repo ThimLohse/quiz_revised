@@ -109,9 +109,9 @@ module.exports = function(socket, io) {
       var answer = activeQuiz.userAnswer(req.quizId, req.userId, req.answer);
 
       if (answer == 1) {
-         io.emit('answer', {status: true, alt: req.answer}); // Might have to change
+         socket.emit('answer', {status: true, alt: req.answer}); // Might have to change
       }else{
-        io.emit('answer', {status: false, alt: req.answer}});
+        socket.emit('answer', {status: false, alt: req.answer});
       }
 
       // Change the sytate of the user so it can not answer more times on the same question
