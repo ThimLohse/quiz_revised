@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataType) {
 			allowNull: false
 		},
 		points: {
-			type: DataType.INTEGER,
+			type: DataType.DOUBLE,
 			allowNull: false
 		}
 	});

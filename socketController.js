@@ -82,7 +82,10 @@ module.exports = function(socket, io) {
   });
 
   socket.on('ready', function(req){
+    console.log('in ready')
     if (activeQuiz.readyToSendFirstQuestion(req.quizId)){
+      console.log('send question')
+      console.log(activeQuiz.nextQuestion(req.quizId))
       io.to(req.quizId).emit('question', activeQuiz.nextQuestion(req.quizId));
     }
   });

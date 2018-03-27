@@ -257,12 +257,12 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
   socket.on('answer', function(res){
     var audio;
     switch(res.status){
-      case 'true':{
+      case true:{
         audio = new Audio("../../../shared/right.mp3");
         //audio = new Audio("../../../shared/right.ogg");
         break;
       }
-      case 'false':{
+      case false:{
         audio = new Audio("../../../shared/wrong.mp3");
         //audio = new Audio("../../../shared/wrong.ogg");
         break;

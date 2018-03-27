@@ -27,7 +27,7 @@ function ActiveQuiz (quizId, name, users, questions, alt1, alt2, alt3, correct, 
 	// Variable to keep count of how many of the players has answered
 	this.answers = 0;
 	// To check when everybody is ready to start
-	this.ready = 0
+	this.ready = 1
 }
 
 function User (userId) {
