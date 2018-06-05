@@ -5,37 +5,12 @@ module.exports = function(app, db) {
 	// Test code to show all users in database
 	app.get('/api/all', function(req, res) {
 		db.user.findAll({/*where*/}).then(function(result){
-			console.log("running api all !!!!!!!!!!!!!!");
-			console.log(result);
 			res.json(result);
 		});
 	});
-	// Sign up a new user
-	/*app.post('/api/signup', function(req, res) {
-		console.log(req.body);
-		db.user.create({
-			username: req.body.user,
-			password: req.body.pwd
-		}).then(function(result){
-			res.json(req.body);
-		});
-	});*/
-
-	/*app.post('/api/signup', function(req, res) {
-		console.log('signing up!!!');
-		console.log(req.body);
-		db.user.create({
-			username: req.body.user,
-			password: req.body.pwd
-		}).then(function(result){
-			//res.json(req.body);
-			res.json({success: true});
-		});
-	});*/
 
 	
 	app.post('/api/signup', function(req, res){
-		console.log('New user might be made!!!');
 		db.user.findOrCreate({
 	      where: {
 	        username: req.body.user
@@ -51,7 +26,7 @@ module.exports = function(app, db) {
 	        console.log('Author already exists');
 	        res.json({success: true});
 	      }else{
-	      	console.log('Created author...');
+
 	      	res.json({success: false});
 	      }
 	    });
@@ -90,4 +65,3 @@ module.exports = function(app, db) {
 
 }
 
-// Post.findAll({ limit: 10, order: '"updatedAt" DESC' })

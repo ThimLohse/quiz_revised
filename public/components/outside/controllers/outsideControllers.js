@@ -25,7 +25,7 @@ angular.module('quiz').controller('loginCtrl', function($rootScope, $scope, $log
 
         $state.go('app.inside.navbar.dashboard')
 
-      } else {
+      }else {
         //if incorrect credentials, send message user
         $scope.status = "is-danger"
         $scope.messageHeader = "Sorry! The username or password was incorrect!";
@@ -34,12 +34,15 @@ angular.module('quiz').controller('loginCtrl', function($rootScope, $scope, $log
       }
 
     }).then(function(response) {
+      
+      /*
       //show a default message if request was unsuccesful!
       $scope.status = "is-danger"
       $scope.messageHeader = "Sorry! Something went wrong with the request. Please try again!";
       $scope.messageBody = "No user have been created.";
       $scope.message = true;
       $log.debug(response);
+      */
     });
 
   }
@@ -63,7 +66,8 @@ angular.module('quiz').controller('registerCtrl', function($scope, $log, $http) 
 
     $http.post('/api/signup', req).then(function(response) {
 
-      if (response.success) {
+      if (response.data.success) {
+        $log.debug(response.data);
         //if successfully created user
         $scope.status = "is-success"
         $scope.messageHeader = "Congratulations. A new user has been created with username: " + $scope.username;
@@ -80,10 +84,12 @@ angular.module('quiz').controller('registerCtrl', function($scope, $log, $http) 
     }).then(function(response) {
 
       //show a default message if request was unsuccesful!
+      /*
       $scope.status = "is-danger"
       $scope.messageHeader = "Sorry! Something went wrong with the request. Please try again!";
       $scope.messageBody = "No user have been created.";
       $scope.message = true;
+      */
     });
   };
 
