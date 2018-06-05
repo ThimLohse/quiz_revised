@@ -49,8 +49,6 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
   //Join quiz
   $scope.joinGame = function(quizId) {
 
-    $log.debug(quizId);
-
     //Add the quizId to the rootScope of the user
     $rootScope.quizId = quizId;
 
@@ -62,7 +60,6 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
       'user': $rootScope.user
     };
     socket.emit('joinQuiz', data);
-    $log.debug('username at joinQuiz quiz: ' + $rootScope.user);
 
     //Go to quiz state
     $state.go('app.inside.quiz');
@@ -72,7 +69,6 @@ angular.module('quiz').controller('quizListCtrl', function($rootScope, $state, $
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
     if (fromState.name == 'app.inside.navbar.quizList' && toState.name.match(/^app\./)) {
       socket.emit('leaveQuizList');
-      $log.debug('user left quiz list');
     }
   });
 
@@ -103,7 +99,7 @@ angular.module('quiz').controller('userResultsCtrl', function($http, $rootScope,
   }).then(function(response) {
     $log.debug('Error when serving request')
   });
-   
+
 });
 
 angular.module('quiz').controller('quizCtrl', function($rootScope, $state, $scope, $log) {
@@ -114,29 +110,10 @@ angular.module('quiz').controller('quizCtrl', function($rootScope, $state, $scop
 angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $scope, $log) {
   $scope.$parent.playerInfo = "Players in room";
 
-
-  /*$scope.$parent.results = [
-    {
-      'user': 'Kalle'
-    }, {
-      'user': 'Stefan'
-    }, {
-      'user': 'Niklas'
-    }, {
-      'user': 'Fanny'
-    }, {
-      'user': 'Lisa'
-    }, {
-      'user': 'Nadja'
-    }, {
-      'user': 'Bengt'
-    }
-  ];
-  */
-
  //Tell the server that you have joined so that the you can obtain the waitinglist;
   var req = {'quizId': $rootScope.quizId};
   socket.emit('userJoined', req);
+
   //Information about all the user that joins the room before the game is started
   socket.on('userJoined', function(data) {
 
@@ -154,8 +131,6 @@ angular.module('quiz').controller('waitingCtrl', function($rootScope, $state, $s
       'quizId': $rootScope.quizId
     };
     socket.emit('startQuiz', data);
-    $log.debug('username at start quiz: ' + $rootScope.user);
-
     $state.go('app.inside.quiz.playing');
   };
 
@@ -177,28 +152,10 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
     })
   });
 
-  /*
-  $scope.$parent.results = [
-    {
-      'user': 'Kalle'
-    }, {
-      'user': 'Stefan'
-    }, {
-      'user': 'Niklas'
-    }, {
-      'user': 'Nadja'
-    }, {
-      'user': 'Bengt'
-    }
-  ];
-  */
-
-
 
   //get question from server
   socket.on('question', function(question) {
 
-    $log.debug(question.question);
     //Update all the fields when a new question is served.
     $scope.$apply(function() {
 
@@ -271,24 +228,6 @@ angular.module('quiz').controller('playingCtrl', function($rootScope, $state, $s
     audio.play();
   });
 
-  //Mock results
-  /*
-  $rootScope.tempRes = {
-    'resultList': [
-      {
-        'user': 'Kalle',
-        'score': 10
-      }, {
-        'user': 'Nina',
-        'score': 20
-      }, {
-        'user': 'Nils',
-        'score': 40
-      }
-    ]
-  };
-  /
-  */
   socket.on('gameOver', function(data) {
     $rootScope.tempRes = data;
     $state.go('app.inside.quiz.tempres');

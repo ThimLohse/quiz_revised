@@ -29,20 +29,20 @@
               </div>
             </div>
             <div class="container has-text-left">
-                Not a member? <span><a ui-sref="app.outside.navbar.register">Register here</a></span>
+              Not a member? <span><a ui-sref="app.outside.navbar.register">Register here</a></span>
             </div>
           </form>
         </div>
       </div>
       <br>
       <article ng-show="message" ng-model="message" class="message {{status}}">
-  <div class="message-header">
-    <p>{{messageHeader}}</p>
-    <button class="delete" aria-label="delete" ng-click="hideMessage()"></button>
-  </div>
-  <div ng-model="message_body" class="message-body">
-    {{messageBody}}
-</article>
+        <div class="message-header">
+          <p>{{messageHeader}}</p>
+          <button class="delete" aria-label="delete" ng-click="hideMessage()"></button>
+        </div>
+        <div ng-model="message_body" class="message-body">
+          {{messageBody}}
+      </article>
+      </div>
     </div>
   </div>
-</div>

@@ -3,30 +3,29 @@ angular.module('quiz').controller('outsideNavCtrl', function($scope, $log) {});
 angular.module('quiz').controller('homeCtrl', function($scope, $log) {});
 
 angular.module('quiz').controller('loginCtrl', function($rootScope, $scope, $log, $http, $state) {
-  //authentication service resource
-  //https://medium.com/opinionated-angularjs/techniques-for-authentication-in-angularjs-applications-7bbf0346acec
   // Hide message on default
   $scope.message = false;
   $scope.submit = function() {
     var username = $scope.username;
     var password = $scope.password;
-    var req = {'user': username, 'pwd': password};
+    var req = {
+      'user': username,
+      'pwd': password
+    };
 
-$http.post('/api/signin', req
-).then(function(response){
+    $http.post('/api/signin', req).then(function(response) {
       //If succesfull answer from server
       //if correct credentials, Login user, set authservice to correct (not secure, but rootscope.isAuth = true) redirect to inside (dashboard)
-      if(response.data.success){
+      if (response.data.success) {
 
         $rootScope.isLoggedin = true;
         $rootScope.user = response.data.userId;
 
         $log.debug("Successfully logged in!");
 
-        $log.debug("username at login: " + $rootScope.user);
         $state.go('app.inside.navbar.dashboard')
 
-      }else{
+      } else {
         //if incorrect credentials, send message user
         $scope.status = "is-danger"
         $scope.messageHeader = "Sorry! The username or password was incorrect!";
@@ -34,8 +33,7 @@ $http.post('/api/signin', req
         $scope.message = true;
       }
 
-
-    }).then(function(response){
+    }).then(function(response) {
       //show a default message if request was unsuccesful!
       $scope.status = "is-danger"
       $scope.messageHeader = "Sorry! Something went wrong with the request. Please try again!";
@@ -43,13 +41,6 @@ $http.post('/api/signin', req
       $scope.message = true;
       $log.debug(response);
     });
-
-    //TODO REMOVE THE BACKDOOR AFTER TESTING
-    if(username === 'admin' && password === 'admin'){
-      $rootScope.isLoggedin = true;
-      $rootScope.user = username;
-      $state.go('app.inside.navbar.dashboard')
-    }
 
   }
 });
@@ -61,44 +52,42 @@ angular.module('quiz').controller('registerCtrl', function($scope, $log, $http) 
     var username = $scope.username;
     var password = $scope.password;
     var vpassword = $scope.vpassword;
-    var req = {'user': username, 'pwd': password};
-      //send post request with username and password to the server
-      $scope.username = '';
-      $scope.password = '';
-      $scope.vpassword = '';
+    var req = {
+      'user': username,
+      'pwd': password
+    };
+    //send post request with username and password to the server
+    $scope.username = '';
+    $scope.password = '';
+    $scope.vpassword = '';
 
-      $http.post('/api/signup', req).then(function(response) {
+    $http.post('/api/signup', req).then(function(response) {
 
-        $log.debug(response);
-
-        if(response.success){
-          //if successfully created user
-          $scope.status = "is-success"
-          $scope.messageHeader = "Congratulations. A new user has been created with username: " + $scope.username;
-          $scope.messageBody = "You can now head over to the login page to start playing Quiz Quest! Happy questing!";
-          $scope.message = true;
-        }
-        else{
-          //show an error message if username is taken
-          $scope.status = "is-danger"
-          $scope.messageHeader = "Sorry! The username has already been taken by someone else!";
-          $scope.messageBody = "Try to register again with a different username";
-          $scope.message = true;
-        }
-
-
-      }, function(response) {
-
-        //show a default message if request was unsuccesful!
-        $scope.status = "is-danger"
-        $scope.messageHeader = "Sorry! Something went wrong with the request. Please try again!";
-        $scope.messageBody = "No user have been created.";
+      if (response.success) {
+        //if successfully created user
+        $scope.status = "is-success"
+        $scope.messageHeader = "Congratulations. A new user has been created with username: " + $scope.username;
+        $scope.messageBody = "You can now head over to the login page to start playing Quiz Quest! Happy questing!";
         $scope.message = true;
-        $log.debug(response);
-      });
+      } else {
+        //show an error message if username is taken
+        $scope.status = "is-danger"
+        $scope.messageHeader = "Sorry! The username has already been taken by someone else!";
+        $scope.messageBody = "Try to register again with a different username";
+        $scope.message = true;
+      }
+
+    }).then(function(response) {
+
+      //show a default message if request was unsuccesful!
+      $scope.status = "is-danger"
+      $scope.messageHeader = "Sorry! Something went wrong with the request. Please try again!";
+      $scope.messageBody = "No user have been created.";
+      $scope.message = true;
+    });
   };
 
-  $scope.hideMessage = function(){
+  $scope.hideMessage = function() {
     $scope.message = false;
   }
 
